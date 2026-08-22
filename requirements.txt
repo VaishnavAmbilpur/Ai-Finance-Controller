@@ -1,0 +1,18 @@
+# Data
+pandas==2.2.2
+numpy==1.26.4
+Faker==26.0.0
+
+# Matching
+rapidfuzz==3.9.6
+
+# AI layer
+openai==1.51.0
+pydantic==2.8.2
+
+# Dashboard
+streamlit==1.37.0
+
+# Dev
+pytest==8.3.2
+python-dotenv==1.0.1

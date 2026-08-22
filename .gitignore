@@ -1,0 +1,16 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+venv/
+
+# Generated data artifacts
+data/
+
+# OS / editor
+.DS_Store
+Thumbs.db

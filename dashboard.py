@@ -7,16 +7,33 @@ import streamlit as st
 import pandas as pd
 import os
 
+from settlematch.generator import generate_dataset
+from main import run_pipeline
+
 # Page config — wide layout for metric cards
 st.set_page_config(page_title="SettleMatch", layout="wide")
 st.title("SettleMatch — Reconciliation Results")
 
 AUDIT_PATH = "data/audit_log.csv"
 
-# Check if audit log exists — user must run main.py first
+# SIDEBAR: Interactive execution controls
+with st.sidebar:
+    st.header("⚡ Pipeline Controls")
+    st.write("Run the pipeline on demand with fresh synthetic data.")
+    
+    if st.button("🎲 Generate New Data & Run Pipeline", type="primary"):
+        with st.spinner("Generating fresh 3-source dataset & running AI pipeline..."):
+            os.makedirs("data", exist_ok=True)
+            generate_dataset(n_settlements=65, random_seed=None)
+            run_pipeline("data/settlement_report.csv", "data/bank_statement.csv", "data/merchant_ledger.csv")
+            st.success("Pipeline completed!")
+            st.rerun()
+
+# Check if audit log exists — user must run main.py or click sidebar button first
 if not os.path.exists(AUDIT_PATH):
-    st.warning("No audit log found. Run `python main.py` first to generate results.")
+    st.warning("No audit log found. Click 'Generate New Data & Run Pipeline' in the sidebar or run `python main.py` in terminal.")
     st.stop()
+
 
 # Load audit log and compute metrics
 df = pd.read_csv(AUDIT_PATH)

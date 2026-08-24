@@ -1,21 +1,37 @@
+# LLM ADJUDICATOR
+# For the ~8% of records rules can't resolve, ask an AI (via OpenRouter) to judge.
+# Uses Pydantic to validate every LLM response before trusting it.
+# Never crashes — every failure path returns ESCALATE_TO_HUMAN.
+#
+# Day 2 fixes applied:
+#   1. os.environ.get() + EnvironmentError instead of hard KeyError crash
+#   2. AsyncOpenAI client + adjudicate_async() for concurrent LLM calls
+#   3. asyncio.sleep() in retry instead of time.sleep() (non-blocking)
+
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 import time
 from enum import Enum
 
-from openai import OpenAI
+from openai import AsyncOpenAI, OpenAI
 from pydantic import BaseModel, field_validator
 
 
 class DecisionType(str, Enum):
+    """The 3 possible LLM decisions — anything else gets rejected."""
     MATCH = "MATCH"
     NO_MATCH = "NO_MATCH"
     ESCALATE_TO_HUMAN = "ESCALATE_TO_HUMAN"
 
 
 class AdjudicationResult(BaseModel):
+    """
+    Pydantic model — validates every LLM response.
+    This is the real safety net against bad LLM output.
+    """
     decision: DecisionType
     reason: str
     confidence: float
@@ -23,16 +39,20 @@ class AdjudicationResult(BaseModel):
     @field_validator("confidence")
     @classmethod
     def confidence_range(cls, v: float) -> float:
+        """Confidence must be between 0 and 1 — reject garbage like 1.5 or -1."""
         assert 0.0 <= v <= 1.0, "Confidence must be between 0 and 1"
         return round(v, 3)
 
     @field_validator("reason")
     @classmethod
     def reason_not_generic(cls, v: str) -> str:
+        """Reason must be >20 chars — forces LLM to explain specifically, not just say 'differs'."""
         assert len(v.strip()) > 20, "Reason must be specific, not a one-word answer"
         return v
 
 
+# SYSTEM PROMPT — teaches the LLM Indian payment context
+# The LLM needs to know about MDR, GST, refunds, paise rounding, batched settlements
 SYSTEM_PROMPT = """You are a financial reconciliation engine for an Indian payment merchant using Razorpay.
 
 You will receive one unmatched settlement record and its closest candidates from the bank statement and merchant ledger. Your job is to determine whether they represent the same underlying transaction.
@@ -49,33 +69,71 @@ Return ONLY valid JSON in this exact schema:
 
 Do not include any text before or after the JSON."""
 
-MAX_RETRIES = 1
-RETRY_DELAY_SECONDS = 2.0
+MAX_RETRIES = 1          # retry once on API error before escalating
+RETRY_DELAY_SECONDS = 2.0  # wait 2 seconds between retries
 
+# Lazy-init singletons — avoids crash when importing without API key
 _client: OpenAI | None = None
+_async_client: AsyncOpenAI | None = None
+
+
+def _get_api_key() -> str:
+    """
+    Read and validate the API key from environment.
+    FIX #1: Use .get() + raise EnvironmentError (not KeyError) so the message is human-readable.
+    """
+    api_key = os.environ.get("OPENROUTER_API_KEY")
+    if not api_key:
+        raise EnvironmentError(
+            "OPENROUTER_API_KEY is not set. "
+            "Copy .env.example to .env and add your OpenRouter key, then re-run."
+        )
+    return api_key
 
 
 def get_client() -> OpenAI:
+    """Lazy synchronous OpenRouter client — created on first use, not at import time."""
     global _client
     if _client is None:
         _client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
-            api_key=os.environ["OPENROUTER_API_KEY"],
+            api_key=_get_api_key(),
         )
     return _client
 
 
+def get_async_client() -> AsyncOpenAI:
+    """
+    FIX #2: Lazy async OpenRouter client for concurrent LLM calls.
+    Created on first use; reused across all concurrent requests in one pipeline run.
+    """
+    global _async_client
+    if _async_client is None:
+        _async_client = AsyncOpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key=_get_api_key(),
+        )
+    return _async_client
+
+
 def get_model() -> str:
+    """Read model from .env — never hardcode, swap any OpenRouter model with one line change."""
     return os.environ.get("OPENROUTER_MODEL", "openrouter/free")
 
 
 def _fmt(value) -> str:
+    """Format a value for the prompt — handle None and NaN safely."""
     if value is None or (isinstance(value, float) and value != value):
         return "N/A"
     return str(value)
 
 
 def build_prompt(settlement_row, candidates: dict) -> str:
+    """
+    Build the user message for the LLM.
+    Shows the settlement record + bank candidate + ledger candidate.
+    The LLM references specific field values in its reason.
+    """
     bank = candidates.get("bank_row") or {}
     ledger = candidates.get("ledger_row") or {}
     return (
@@ -107,10 +165,15 @@ def build_prompt(settlement_row, candidates: dict) -> str:
 
 
 def _call_llm(prompt: str) -> str:
+    """
+    Make one synchronous API call to OpenRouter.
+    If the model doesn't support response_format, retry without it.
+    Kept for backwards-compatibility with sync callers.
+    """
     try:
         response = get_client().chat.completions.create(
             model=get_model(),
-            max_tokens=400,
+            max_tokens=400,  # short — we only need JSON, not prose
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": prompt},
@@ -133,30 +196,52 @@ def _call_llm(prompt: str) -> str:
     return response.choices[0].message.content
 
 
-def adjudicate(settlement_row, candidates: dict) -> AdjudicationResult:
-    prompt = build_prompt(settlement_row, candidates)
+async def _call_llm_async(prompt: str) -> str:
+    """
+    FIX #2: Async version of _call_llm — awaitable, non-blocking.
+    Multiple of these can run concurrently via asyncio.gather in run_pipeline_async.
+    Falls back to no response_format if the model doesn't support JSON mode.
+    """
+    try:
+        response = await get_async_client().chat.completions.create(
+            model=get_model(),
+            max_tokens=400,
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": prompt},
+            ],
+            response_format={"type": "json_object"},
+        )
+    except Exception as e:
+        message = str(e).lower()
+        if "response_format" in message or "json_object" in message:
+            response = await get_async_client().chat.completions.create(
+                model=get_model(),
+                max_tokens=400,
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": prompt},
+                ],
+            )
+        else:
+            raise
+    return response.choices[0].message.content
 
-    raw = None
-    last_error = ""
-    for attempt in range(MAX_RETRIES + 1):
-        try:
-            raw = _call_llm(prompt)
-            break
-        except Exception as e:
-            last_error = str(e)
-            if attempt < MAX_RETRIES:
-                time.sleep(RETRY_DELAY_SECONDS)
 
+def _parse_llm_response(raw: str | None, last_error: str) -> AdjudicationResult:
+    """
+    Shared response-parsing logic used by both sync and async adjudicators.
+    All error paths return ESCALATE_TO_HUMAN — never crashes.
+    """
     if raw is None:
         return AdjudicationResult(
             decision=DecisionType.ESCALATE_TO_HUMAN,
             reason=f"API error during adjudication after retry: {last_error[:200]}",
             confidence=0.0,
         )
-
     try:
         parsed = json.loads(raw.strip())
-        return AdjudicationResult(**parsed)
+        return AdjudicationResult(**parsed)  # Pydantic validates here — the real safety net
     except json.JSONDecodeError:
         snippet = raw.strip()[:100]
         return AdjudicationResult(
@@ -170,3 +255,53 @@ def adjudicate(settlement_row, candidates: dict) -> AdjudicationResult:
             reason=f"LLM output failed validation: {str(e)[:200]}",
             confidence=0.0,
         )
+
+
+def adjudicate(settlement_row, candidates: dict) -> AdjudicationResult:
+    """
+    Synchronous entry point: ask the LLM to judge one ambiguous record.
+    Kept for backwards-compatibility. Prefer adjudicate_async() for new code.
+
+    Error handling (never crashes):
+      - API error → retry once, then ESCALATE
+      - Bad JSON → ESCALATE with raw output logged
+      - Invalid enum (e.g. "UNCERTAIN") → Pydantic rejects → ESCALATE
+      - Generic reason → Pydantic rejects → ESCALATE
+    """
+    prompt = build_prompt(settlement_row, candidates)
+    raw = None
+    last_error = ""
+    for attempt in range(MAX_RETRIES + 1):
+        try:
+            raw = _call_llm(prompt)
+            break
+        except Exception as e:
+            last_error = str(e)
+            if attempt < MAX_RETRIES:
+                time.sleep(RETRY_DELAY_SECONDS)  # sync callers: blocking sleep is acceptable
+    return _parse_llm_response(raw, last_error)
+
+
+async def adjudicate_async(settlement_row, candidates: dict) -> AdjudicationResult:
+    """
+    FIX #2 + #3: Async entry point — awaitable and non-blocking.
+    Called via asyncio.gather in run_pipeline_async for concurrent LLM adjudication.
+    Uses asyncio.sleep (non-blocking) instead of time.sleep on retry.
+
+    Error handling (same as sync version — never crashes):
+      - API error → retry once with asyncio.sleep, then ESCALATE
+      - Bad JSON → ESCALATE
+      - Invalid Pydantic → ESCALATE
+    """
+    prompt = build_prompt(settlement_row, candidates)
+    raw = None
+    last_error = ""
+    for attempt in range(MAX_RETRIES + 1):
+        try:
+            raw = await _call_llm_async(prompt)
+            break
+        except Exception as e:
+            last_error = str(e)
+            if attempt < MAX_RETRIES:
+                await asyncio.sleep(RETRY_DELAY_SECONDS)  # FIX #3: non-blocking retry wait
+    return _parse_llm_response(raw, last_error)

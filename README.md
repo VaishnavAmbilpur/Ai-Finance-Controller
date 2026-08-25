@@ -21,32 +21,32 @@ Most reconciliation tools match 2 sources (settlement vs. bank). SettleMatch mat
 
 ```mermaid
 flowchart TD
-    A[settlement_report.csv\nRazorpay export] --> D[Ingest & Pre-normalize\nO(1) Set Lookups]
-    B[bank_statement.csv\nNEFT/IMPS credits] --> D
-    C[merchant_ledger.csv\nInternal ERP records] --> D
+    A["settlement_report.csv<br/>Razorpay export"] --> D["Ingest & Pre-normalize<br/>O(1) Set Lookups"]
+    B["bank_statement.csv<br/>NEFT/IMPS credits"] --> D
+    C["merchant_ledger.csv<br/>Internal ERP records"] --> D
 
-    D --> E[Rule-Based & Batch Engine\nExact UTR + order_id + Batch Split\nAmount ±₹1.00 · Date ±2 days]
+    D --> E["Rule-Based & Batch Engine<br/>Exact UTR + order_id + Batch Split<br/>Amount ±₹1.00 · Date ±2 days"]
 
-    E -->|All 3 sources align / Batch matched| F[AUTO-APPROVED / BATCH_SPLIT_APPROVED ✓]
-    E -->|UTR off by 1 digit| G[Fuzzy Matcher\nrapidfuzz Levenshtein ≤ 1]
-    E -->|Amount/date outside tolerance| H[Async LLM Adjudicator\nOpenRouter Concurrent Calls]
-    E -->|No candidate found| H
+    E -->|"All 3 sources align / Batch matched"| F["AUTO-APPROVED / BATCH_SPLIT_APPROVED ✓"]
+    E -->|"UTR off by 1 digit"| G["Fuzzy Matcher<br/>rapidfuzz Levenshtein ≤ 1"]
+    E -->|"Amount/date outside tolerance"| H["Async LLM Adjudicator<br/>OpenRouter Concurrent Calls"]
+    E -->|"No candidate found"| H
 
-    G -->|Match confirmed| F
-    G -->|Still ambiguous| H
+    G -->|"Match confirmed"| F
+    G -->|"Still ambiguous"| H
 
-    H -->|MATCH — with reason| F
-    H -->|NO_MATCH — with reason| I[Exception Queue]
-    H -->|ESCALATE_TO_HUMAN| I
+    H -->|"MATCH - with reason"| F
+    H -->|"NO_MATCH - with reason"| I["Exception Queue"]
+    H -->|"ESCALATE_TO_HUMAN"| I
 
-    F --> J[Audit Logger & Backup\naudit_log.csv]
+    F --> J["Audit Logger & Backup<br/>audit_log.csv"]
     I --> J
 
-    J --> K[Eval Harness]
-    K --> L[Match Rate %]
-    K --> M[Exception Breakdown]
-    K --> N[Throughput\nrecords/sec]
-    K --> O[LLM Call Rate %]
+    J --> K["Eval Harness"]
+    K --> L["Match Rate %"]
+    K --> M["Exception Breakdown"]
+    K --> N["Throughput<br/>records/sec"]
+    K --> O["LLM Call Rate %"]
 ```
 
 ## Results
@@ -96,8 +96,8 @@ During Day 2 development, we identified 6 critical edge cases:
 ## Setup & Running
 
 ```bash
-git clone https://github.com/yourusername/settlematch
-cd settlematch
+git clone https://github.com/VaishnavAmbilpur/Ai-Finance-Controller.git
+cd Ai-Finance-Controller
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env          # add your OPENROUTER_API_KEY

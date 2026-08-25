@@ -49,8 +49,16 @@ with st.expander("System Overview & How SettleMatch Works", expanded=True):
     ---
     **How the Reconciliation Pipeline Operates:**
     - **Step 1: Rule Engine (Fast Match)** — Instantly matches exact UTRs, 1-digit UTR typos, and multi-order batch deposits for 0 API cost.
-    - **Step 2: AI Finance Controller (Discrepancy Adjudication)** — Analyzes ambiguous records with fee differences, calculates MDR rates (1.5% - 2.5%), 18% GST tax, and refund timing, and automatically adjudicates matches.
+    - **Step 2: AI Finance Controller (Discrepancy Adjudication)** — Analyzes ambiguous records with fee differences, calculates MDR rates (1.5% - 2.2%), 18% GST tax, and refund timing, and automatically adjudicates matches.
     - **Step 3: Audit Trail & Exception Management** — Produces a human-readable audit log with full financial reasoning and isolates true missing entries for manual review.
+
+    ---
+    **Financial Fee Formulas & Calculation Transparency:**
+    - **Merchant Discount Rate (MDR):** Standard Razorpay fee range between **1.5% and 2.2%** (`MDR Fee = Gross Amount × MDR Rate`).
+    - **GST Tax on MDR:** Statutory **18.0% GST** applied to the MDR fee (`GST Tax = MDR Fee × 18%`).
+    - **Net Payout Formula:** `Net Payout = Gross Amount - MDR Fee - GST Tax`.
+    - **Rule Engine Tolerances:** Amount Tolerance: **₹1.00** | Date Lag Window: **2 Days (T+1/T+2)** | Fuzzy UTR Threshold: **93% Levenshtein similarity**.
+    - **AI Adjudication Threshold:** Up to **5% or ₹50** fee variance allowed for refund & MDR adjustment verification.
     
     *Click **"Generate New Data & Run Pipeline"** in the top right to simulate new randomized payment datasets and execute the pipeline.*
     """)

@@ -17,24 +17,28 @@ st.title("SettleMatch — Reconciliation Results")
 AUDIT_PATH = "data/audit_log.csv"
 
 # SIDEBAR: Interactive execution controls
+def _generate_and_run(seed=None):
+    os.makedirs("data", exist_ok=True)
+    settlements, bank, ledger = generate_dataset(n_records=65, seed=seed)
+    settlements.to_csv("data/settlement_report.csv", index=False)
+    bank.to_csv("data/bank_statement.csv", index=False)
+    ledger.to_csv("data/merchant_ledger.csv", index=False)
+    run_pipeline("data/settlement_report.csv", "data/bank_statement.csv", "data/merchant_ledger.csv")
+
 with st.sidebar:
     st.header("⚡ Pipeline Controls")
     st.write("Run the pipeline on demand with fresh synthetic data.")
     
     if st.button("🎲 Generate New Data & Run Pipeline", type="primary"):
         with st.spinner("Generating fresh 3-source dataset & running AI pipeline..."):
-            os.makedirs("data", exist_ok=True)
-            generate_dataset(n_records=65, seed=None)
-            run_pipeline("data/settlement_report.csv", "data/bank_statement.csv", "data/merchant_ledger.csv")
+            _generate_and_run(seed=None)
             st.success("Pipeline completed!")
             st.rerun()
 
 # Check if audit log exists — auto-generate dataset on first launch if missing
 if not os.path.exists(AUDIT_PATH):
     with st.spinner("Initializing dataset and running SettleMatch pipeline for first launch..."):
-        os.makedirs("data", exist_ok=True)
-        generate_dataset(n_records=65, seed=42)
-        run_pipeline("data/settlement_report.csv", "data/bank_statement.csv", "data/merchant_ledger.csv")
+        _generate_and_run(seed=42)
 
 
 # Load audit log and compute metrics

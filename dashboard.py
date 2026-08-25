@@ -1,6 +1,6 @@
 # STREAMLIT DASHBOARD
 # Non-technical, executive-ready interface for 3-way payment reconciliation.
-# Completely emoji-free layout focusing on business clarity and AI impact.
+# Features Financial ROI Calculator & Visual Reconciliation Funnel.
 
 import os
 import pandas as pd
@@ -66,17 +66,52 @@ final_exceptions = len(df[df["decision"].isin(["LLM_ESCALATED", "MISSING_COUNTER
 # Net AI Automation Improvement
 automation_diff = round(final_accuracy - rule_accuracy, 1)
 
-# SECTION 1: EXECUTIVE METRIC OVERVIEW
-st.subheader("Executive Performance Summary")
+# FINANCIAL ROI & TIME SAVED CALCULATOR
+# Standard industry metric: 15 mins manual audit per complex fee/MDR exception @ $30/hr
+time_saved_hours = round(ai_resolved * 15 / 60, 1)
+cost_saved_run = round(time_saved_hours * 30.0, 2)
+annualized_savings = round(cost_saved_run * 365, 0)
+workload_reduction = round((ai_resolved / (ai_discrepancies + final_exceptions) * 100), 1) if (ai_discrepancies + final_exceptions) > 0 else 100.0
+
+
+# SECTION 1: EXECUTIVE PERFORMANCE & FINANCIAL ROI SUMMARY
+st.subheader("Executive Performance & Financial ROI Summary")
+
 c1, c2, c3, c4 = st.columns(4)
-c1.metric("Total Records Processed", total_records)
-c2.metric("Rule Engine Accuracy (Without AI)", f"{rule_accuracy}%")
-c3.metric("AI Controller Accuracy (With AI)", f"{final_accuracy}%", delta=f"+{automation_diff}%")
-c4.metric("Final Manual Exceptions Remaining", final_exceptions, delta=f"-{ai_resolved} resolved", delta_color="inverse")
+c1.metric("Overall Reconciliation Accuracy", f"{final_accuracy}%", delta=f"+{automation_diff}% AI boost")
+c2.metric("Manual Audit Time Saved", f"{time_saved_hours} Hours", delta=f"{ai_resolved} discrepancies automated")
+c3.metric("Operational Cost Saved per Run", f"${cost_saved_run:,.2f}", help="Based on $30/hr finance analyst rate")
+c4.metric("Projected Annualized ROI", f"${annualized_savings:,.0f} / year", help="Projected savings assuming daily runs")
 
 st.divider()
 
-# SECTION 2: BEFORE VS AFTER AI AUTOMATION COMPARISON
+# SECTION 2: VISUAL RECONCILIATION FUNNEL
+st.subheader("Visual Reconciliation Funnel (Pipeline Processing Stages)")
+
+pct_rule = round(rule_matches / total_records, 3) if total_records > 0 else 0.0
+pct_ai = round(ai_resolved / total_records, 3) if total_records > 0 else 0.0
+pct_manual = round(final_exceptions / total_records, 3) if total_records > 0 else 0.0
+
+f_col1, f_col2, f_col3 = st.columns(3)
+
+with f_col1:
+    st.markdown(f"**Stage 1: Rule Engine Approved ({rule_matches} records / {round(pct_rule*100, 1)}%)**")
+    st.progress(pct_rule)
+    st.caption("Exact UTR, fuzzy UTR, and batch split matches approved instantly by rules.")
+
+with f_col2:
+    st.markdown(f"**Stage 2: AI Controller Resolved ({ai_resolved} records / {round(pct_ai*100, 1)}%)**")
+    st.progress(pct_ai)
+    st.caption("Complex MDR fee variances, tax deductions, and refund timing resolved by AI.")
+
+with f_col3:
+    st.markdown(f"**Stage 3: Manual Exception Escalation ({final_exceptions} records / {round(pct_manual*100, 1)}%)**")
+    st.progress(pct_manual)
+    st.caption("Unmatched missing entries requiring manual human audit review.")
+
+st.divider()
+
+# SECTION 3: BEFORE VS AFTER AI AUTOMATION COMPARISON
 st.subheader("Automation Difference: Traditional Rules vs AI Finance Controller")
 
 col_before, col_after = st.columns(2)
@@ -84,7 +119,7 @@ col_before, col_after = st.columns(2)
 with col_before:
     st.markdown("### Traditional Rule-Based Engine")
     st.write("Strict hard-coded rules for exact UTR, exact amount, and standard date matching.")
-    st.metric("Successful Matches", f"{rule_matches} / {total_records}")
+    st.metric("Successful Rule Matches", f"{rule_matches} / {total_records}")
     st.metric("Discrepancies Flagged for Review", ai_discrepancies + final_exceptions)
     st.info("Traditional systems flag all fee variances, MDR deductions, and refund timing lags as manual exceptions.")
 
@@ -92,12 +127,12 @@ with col_after:
     st.markdown("### SettleMatch AI Finance Controller")
     st.write("Intelligent AI engine that evaluates merchant fee deductions, MDR taxes, and refund timing.")
     st.metric("Automatically Resolved by AI", f"{ai_resolved} / {ai_discrepancies}")
-    st.metric("Net Automation Boost", f"+{automation_diff}% improvement")
+    st.metric("Workload Reduction", f"{workload_reduction}% less manual audit")
     st.success(f"AI automatically resolved {ai_resolved} complex fee & refund discrepancies without human intervention.")
 
 st.divider()
 
-# SECTION 3: DECISION BREAKDOWN & AI RESOLUTION DETAILS
+# SECTION 4: DECISION BREAKDOWN & DISTRIBUTION
 st.subheader("Reconciliation Outcome Breakdown")
 
 chart_col, details_col = st.columns([1, 1])
@@ -117,7 +152,7 @@ with details_col:
 
 st.divider()
 
-# SECTION 4: AI RESOLUTION DEEP-DIVE TABLE
+# SECTION 5: AI RESOLUTION DEEP-DIVE TABLE
 st.subheader("AI Adjudication Deep-Dive - Verified Discrepancy Log")
 with st.expander("View detailed records resolved by AI", expanded=True):
     available_cols = [
@@ -133,7 +168,7 @@ with st.expander("View detailed records resolved by AI", expanded=True):
 
 st.divider()
 
-# SECTION 5: AUDIT TRAIL & LOG EXPORT
+# SECTION 6: AUDIT TRAIL & LOG EXPORT
 st.subheader("Audit Trail & Log Export")
 with st.expander("Filter and Download Audit Log"):
     filter_options = df["decision"].unique().tolist()

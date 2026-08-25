@@ -1,6 +1,6 @@
 # STREAMLIT DASHBOARD
 # Non-technical, executive-ready interface for 3-way payment reconciliation.
-# Features Financial ROI Calculator & Visual Reconciliation Funnel.
+# Includes ROI Calculator, Reconciliation Funnel, Live Search, Transaction Inspector, and Executive Report Export.
 
 import os
 import pandas as pd
@@ -132,7 +132,34 @@ with col_after:
 
 st.divider()
 
-# SECTION 4: DECISION BREAKDOWN & DISTRIBUTION
+# SECTION 4: INTERACTIVE SINGLE-TRANSACTION INSPECTOR
+st.subheader("Interactive Transaction Inspector")
+st.write("Select any Settlement ID to inspect its 3-way reconciliation details and decision reasoning:")
+
+settlement_ids = df["settlement_id"].tolist()
+if settlement_ids:
+    selected_id = st.selectbox("Choose Settlement ID to inspect:", settlement_ids)
+    selected_row = df[df["settlement_id"] == selected_id].iloc[0]
+
+    i_col1, i_col2, i_col3 = st.columns(3)
+    with i_col1:
+        st.markdown("**Settlement Record**")
+        st.write(f"- ID: `{selected_row['settlement_id']}`")
+        st.write(f"- Timestamp: `{selected_row['timestamp']}`")
+    with i_col2:
+        st.markdown("**Bank Entry Match**")
+        st.write(f"- Bank UTR: `{selected_row['bank_utr']}`")
+        st.write(f"- Amount Delta: `{selected_row['amount_delta']}`")
+    with i_col3:
+        st.markdown("**Merchant Ledger Entry**")
+        st.write(f"- Ledger Order: `{selected_row['ledger_order']}`")
+        st.write(f"- Processing Method: `{selected_row['method'].upper()}`")
+
+    st.info(f"**Decision: {selected_row['decision']}** — Reason: {selected_row['reason']}")
+
+st.divider()
+
+# SECTION 5: DECISION BREAKDOWN & DISTRIBUTION
 st.subheader("Reconciliation Outcome Breakdown")
 
 chart_col, details_col = st.columns([1, 1])
@@ -152,7 +179,7 @@ with details_col:
 
 st.divider()
 
-# SECTION 5: AI RESOLUTION DEEP-DIVE TABLE
+# SECTION 6: AI RESOLUTION DEEP-DIVE TABLE
 st.subheader("AI Adjudication Deep-Dive - Verified Discrepancy Log")
 with st.expander("View detailed records resolved by AI", expanded=True):
     available_cols = [
@@ -168,17 +195,58 @@ with st.expander("View detailed records resolved by AI", expanded=True):
 
 st.divider()
 
-# SECTION 6: AUDIT TRAIL & LOG EXPORT
+# SECTION 7: AUDIT TRAIL, LIVE SEARCH & EXPORT
 st.subheader("Audit Trail & Log Export")
-with st.expander("Filter and Download Audit Log"):
+with st.expander("Filter, Search, and Export Complete Audit Log", expanded=True):
+    search_query = st.text_input("Instant Search (type Settlement ID, Bank UTR, Order ID, or keyword):", placeholder="e.g. UTR or Order ID...")
+
     filter_options = df["decision"].unique().tolist()
     selected_decisions = st.multiselect("Filter audit log by decision:", options=filter_options, default=filter_options)
+
     filtered_df = df[df["decision"].isin(selected_decisions)]
+
+    if search_query.strip():
+        q = search_query.strip().lower()
+        mask = filtered_df.astype(str).apply(lambda row: row.str.lower().str.contains(q).any(), axis=1)
+        filtered_df = filtered_df[mask]
+
     st.dataframe(filtered_df, use_container_width=True, height=350)
 
-    st.download_button(
-        label="Download Audit Log (CSV)",
-        data=df.to_csv(index=False),
-        file_name="audit_log.csv",
-        mime="text/csv",
-    )
+    btn_col1, btn_col2 = st.columns(2)
+    with btn_col1:
+        st.download_button(
+            label="Download Complete Audit Log (CSV)",
+            data=df.to_csv(index=False),
+            file_name="audit_log.csv",
+            mime="text/csv",
+        )
+    with btn_col2:
+        # Executive Text Report Generator
+        exec_report = f"""=====================================================
+SETTLEMATCH AI FINANCE CONTROLLER - EXECUTIVE SUMMARY
+=====================================================
+Total Records Processed: {total_records}
+Rule Engine Accuracy (Without AI): {rule_accuracy}%
+AI Controller Accuracy (With AI): {final_accuracy}%
+Net AI Automation Improvement: +{automation_diff}%
+
+FINANCIAL ROI & TIME SAVINGS:
+- Manual Audit Time Saved: {time_saved_hours} Hours
+- Operational Cost Saved per Run: ${cost_saved_run:,.2f}
+- Projected Annualized Savings: ${annualized_savings:,.0f} / year
+- Workload Reduction: {workload_reduction}%
+
+DECISION BREAKDOWN:
+- Auto Approved (Exact Match): {len(df[df['decision']=='AUTO_APPROVED'])}
+- Fuzzy Approved (Minor UTR Typo): {len(df[df['decision']=='FUZZY_APPROVED'])}
+- Batch Split Approved (Multi-Order): {len(df[df['decision']=='BATCH_SPLIT_APPROVED'])}
+- AI Resolved (Fee/MDR Deduction Verified): {ai_resolved}
+- Missing Counterpart (Manual Audit Required): {len(df[df['decision']=='MISSING_COUNTERPART'])}
+=====================================================
+"""
+        st.download_button(
+            label="Download Executive Summary Report (TXT)",
+            data=exec_report,
+            file_name="executive_reconciliation_summary.txt",
+            mime="text/plain",
+        )

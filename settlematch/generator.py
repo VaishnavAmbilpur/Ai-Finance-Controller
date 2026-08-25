@@ -18,8 +18,8 @@ BANKS = [
     "YESB", "UTIB", "IDFB", "PUNB", "BARB",
 ]
 
-FAILURE_MODES = ["clean", "lag", "utr_typo", "batch", "refund", "rounding"]
-FAILURE_WEIGHTS = [55, 12, 8, 8, 9, 8]  # percentages
+FAILURE_MODES = ["clean", "lag", "utr_typo", "batch", "refund", "rounding", "missing"]
+FAILURE_WEIGHTS = [50, 10, 10, 10, 10, 2, 8]  # percentages
 
 
 def set_seed(seed: int | None = None) -> None:
@@ -195,8 +195,8 @@ def generate_dataset(
             "_batch_group": batch_groups.get(i),
         })
 
-        # SOURCE 2: Bank Statement (non-batch only)
-        if failure != "batch":
+        # SOURCE 2: Bank Statement (non-batch and non-missing only)
+        if failure not in {"batch", "missing"}:
             bank_entries.append({
                 "value_date": bank_date.strftime("%Y-%m-%d"),
                 "utr": bank_utr,

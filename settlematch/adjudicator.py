@@ -79,29 +79,23 @@ _async_client: AsyncOpenAI | None = None
 
 
 def _get_api_key() -> str:
-    """Read API key — supports both OPENROUTER_API_KEY and OPENAI_API_KEY."""
-    api_key = os.environ.get("OPENROUTER_API_KEY") or os.environ.get("OPENAI_API_KEY")
+    """Read OpenRouter API key from environment."""
+    api_key = os.environ.get("OPENROUTER_API_KEY")
     if not api_key:
         raise EnvironmentError(
-            "Neither OPENROUTER_API_KEY nor OPENAI_API_KEY is set. "
-            "Copy .env.example to .env and add your API key, then re-run."
+            "OPENROUTER_API_KEY is not set. "
+            "Copy .env.example to .env and add your OpenRouter API key, then re-run."
         )
     return api_key
 
 
 def _get_base_url() -> str:
-    """Read base URL — defaults to OpenRouter, or OpenAI if OPENAI_API_KEY is set."""
-    if os.environ.get("OPENAI_BASE_URL"):
-        return os.environ["OPENAI_BASE_URL"]
-    if os.environ.get("OPENROUTER_BASE_URL"):
-        return os.environ["OPENROUTER_BASE_URL"]
-    if os.environ.get("OPENAI_API_KEY") and not os.environ.get("OPENROUTER_API_KEY"):
-        return "https://api.openai.com/v1"
-    return "https://openrouter.ai/api/v1"
+    """Read base URL — defaults to OpenRouter API endpoint."""
+    return os.environ.get("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
 
 
 def get_client() -> OpenAI:
-    """Lazy synchronous OpenAI/OpenRouter client — created on first use."""
+    """Lazy synchronous OpenRouter LLM client — created on first use."""
     global _client
     if _client is None:
         _client = OpenAI(
@@ -113,7 +107,7 @@ def get_client() -> OpenAI:
 
 
 def get_async_client() -> AsyncOpenAI:
-    """Lazy async client for concurrent LLM calls — supports OpenAI and OpenRouter."""
+    """Lazy async OpenRouter LLM client for concurrent adjudication."""
     global _async_client
     if _async_client is None:
         _async_client = AsyncOpenAI(
@@ -125,13 +119,8 @@ def get_async_client() -> AsyncOpenAI:
 
 
 def get_model() -> str:
-    """Read model from .env — supports OPENAI_MODEL and OPENROUTER_MODEL."""
-    model = os.environ.get("OPENROUTER_MODEL") or os.environ.get("OPENAI_MODEL")
-    if model:
-        return model
-    if os.environ.get("OPENAI_API_KEY") and not os.environ.get("OPENROUTER_API_KEY"):
-        return "gpt-4o-mini"
-    return "liquid/lfm-2.5-2.6b:free"
+    """Read OpenRouter model slug from .env — defaults to fast free model."""
+    return os.environ.get("OPENROUTER_MODEL", "liquid/lfm-2.5-2.6b:free")
 
 
 def _fmt(value) -> str:

@@ -1,6 +1,6 @@
 # SettleMatch
 
-**93.8% match rate · 4.6 records/sec · Dynamic 3-source synthetic generator · 68 passing unit & integration tests**
+**95.4% match rate · 9.2 records/sec · Dynamic 3-source synthetic generator · 69 passing unit & integration tests**
 
 An AI agent that reconciles Razorpay settlement reports, bank statements, and merchant ledgers.
 Auto-resolves clean cases with rules, handles batched settlements & fuzzy UTR typos, escalates ambiguous cases concurrently to an LLM via OpenRouter, and honestly reports everything it couldn't resolve. Every decision is explained and fully auditable.

@@ -22,7 +22,7 @@ def _apply_llm_result(rule_result, llm_result: AdjudicationResult):
     if llm_result.decision == DecisionType.MATCH:
         return replace(
             rule_result,
-            decision=MatcherDecision.AUTO_APPROVED,
+            decision="LLM_MATCHED",
             reason=llm_result.reason,
             method="llm",
             exception_category=None,

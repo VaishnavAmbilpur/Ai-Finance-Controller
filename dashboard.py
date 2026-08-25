@@ -29,10 +29,12 @@ with st.sidebar:
             st.success("Pipeline completed!")
             st.rerun()
 
-# Check if audit log exists — user must run main.py or click sidebar button first
+# Check if audit log exists — auto-generate dataset on first launch if missing
 if not os.path.exists(AUDIT_PATH):
-    st.warning("No audit log found. Click 'Generate New Data & Run Pipeline' in the sidebar or run `python main.py` in terminal.")
-    st.stop()
+    with st.spinner("Initializing dataset and running SettleMatch pipeline for first launch..."):
+        os.makedirs("data", exist_ok=True)
+        generate_dataset(n_records=65, seed=42)
+        run_pipeline("data/settlement_report.csv", "data/bank_statement.csv", "data/merchant_ledger.csv")
 
 
 # Load audit log and compute metrics

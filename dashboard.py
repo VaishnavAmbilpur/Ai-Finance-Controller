@@ -12,11 +12,9 @@ from main import run_pipeline
 
 # Page config — wide layout for metric cards
 st.set_page_config(page_title="SettleMatch", layout="wide")
-st.title("SettleMatch — Reconciliation Results")
 
 AUDIT_PATH = "data/audit_log.csv"
 
-# SIDEBAR: Interactive execution controls
 def _generate_and_run(seed=None):
     os.makedirs("data", exist_ok=True)
     settlements, bank, ledger = generate_dataset(n_records=65, seed=seed)
@@ -25,15 +23,18 @@ def _generate_and_run(seed=None):
     ledger.to_csv("data/merchant_ledger.csv", index=False)
     run_pipeline("data/settlement_report.csv", "data/bank_statement.csv", "data/merchant_ledger.csv")
 
-with st.sidebar:
-    st.header("⚡ Pipeline Controls")
-    st.write("Run the pipeline on demand with fresh synthetic data.")
-    
-    if st.button("🎲 Generate New Data & Run Pipeline", type="primary"):
-        with st.spinner("Generating fresh 3-source dataset & running AI pipeline..."):
+# HEADER: Title + inline small control button
+col_header, col_btn = st.columns([3, 1], vertical_alignment="center")
+with col_header:
+    st.title("SettleMatch — Reconciliation Results")
+    st.caption("⚡ Automated 3-way reconciliation (Razorpay Settlement vs Bank Statement vs Merchant Ledger)")
+with col_btn:
+    if st.button("🎲 Generate New Data & Run", type="primary", use_container_width=True):
+        with st.spinner("Running AI pipeline..."):
             _generate_and_run(seed=None)
-            st.success("Pipeline completed!")
             st.rerun()
+
+st.divider()
 
 # Check if audit log exists — auto-generate dataset on first launch if missing
 if not os.path.exists(AUDIT_PATH):

@@ -24,7 +24,7 @@ with st.sidebar:
     if st.button("🎲 Generate New Data & Run Pipeline", type="primary"):
         with st.spinner("Generating fresh 3-source dataset & running AI pipeline..."):
             os.makedirs("data", exist_ok=True)
-            generate_dataset(n_settlements=65, random_seed=None)
+            generate_dataset(n_records=65, seed=None)
             run_pipeline("data/settlement_report.csv", "data/bank_statement.csv", "data/merchant_ledger.csv")
             st.success("Pipeline completed!")
             st.rerun()
@@ -60,7 +60,7 @@ st.bar_chart(decision_counts)
 st.subheader("Exception Breakdown")
 exc_df = df[~df["decision"].isin(["AUTO_APPROVED", "FUZZY_APPROVED", "BATCH_SPLIT_APPROVED", "LLM_MATCHED"])]
 if not exc_df.empty:
-    exc_counts = exc_df["decision"].value_counts()
+    exc_counts = pd.Series(exc_df["decision"]).value_counts()
     st.bar_chart(exc_counts)
 else:
     st.success("No exceptions — all records matched!")

@@ -29,10 +29,8 @@ def categorize_exceptions(results) -> dict[str, list]:
     buckets = {cat: [] for cat in EXCEPTION_CATEGORIES}
 
     for r in results:
-        d = r.decision if hasattr(r, "decision") else str(r.decision)
-
-        if hasattr(d, "value"):
-            d = d.value
+        d_val = getattr(r, "decision", r)
+        d = str(getattr(d_val, "value", d_val))
 
         # Skip matched records — they're not exceptions
         if d in MATCHED_DECISIONS:
@@ -68,8 +66,7 @@ def compute_metrics(results, elapsed: float, llm_calls: int, total: int) -> dict
     """
     matched = sum(
         1 for r in results
-        if (r.decision if hasattr(r, "decision") else str(r.decision)) in MATCHED_DECISIONS
-        or (hasattr(r.decision, "value") and r.decision.value in MATCHED_DECISIONS)
+        if str(getattr(r.decision if hasattr(r, "decision") else r, "value", getattr(r, "decision", r))) in MATCHED_DECISIONS
     )
 
     exceptions = categorize_exceptions(results)

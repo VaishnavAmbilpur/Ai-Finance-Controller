@@ -84,7 +84,7 @@ def test_generic_reason_rejected():
 def test_deliberate_failure_uncertain_rejected():
     with pytest.raises(Exception):
         AdjudicationResult(
-            decision="UNCERTAIN",
+            decision="UNCERTAIN",  # type: ignore[arg-type]
             reason="Cannot determine match from given fields",
             confidence=0.5,
         )

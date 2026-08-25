@@ -85,7 +85,7 @@ def match_settlement(
     # Extract and normalize settlement fields
     settlement_utr = str(settlement_row["utr"]).strip().upper()
     settlement_order_id = str(settlement_row["order_id"]).strip()
-    settlement_net = round(float(settlement_row["net_amount"]), 2)
+    settlement_net = round(float(str(settlement_row["net_amount"])), 2)
     settlement_date = _parse_date(settlement_row["settlement_date"])
 
     # Edge case: empty bank or ledger = nothing to match against
@@ -249,7 +249,7 @@ def detect_batch_splits(
 
         # Sum all settlements' net amounts and compare to single bank credit
         bank_credit = round(float(bank_credit_map[utr]), 2)
-        total_net = round(float(group["net_amount"].sum()), 2)
+        total_net = round(float(str(group["net_amount"].sum())), 2)
         delta = round(abs(bank_credit - total_net), 2)
 
         # Check if sum matches bank credit (tolerance scales with group size)

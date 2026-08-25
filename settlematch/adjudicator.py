@@ -193,7 +193,7 @@ def _call_llm(prompt: str) -> str:
             )
         else:
             raise
-    return response.choices[0].message.content
+    return response.choices[0].message.content or ""
 
 
 async def _call_llm_async(prompt: str) -> str:
@@ -225,7 +225,7 @@ async def _call_llm_async(prompt: str) -> str:
             )
         else:
             raise
-    return response.choices[0].message.content
+    return response.choices[0].message.content or ""
 
 
 def _parse_llm_response(raw: str | None, last_error: str) -> AdjudicationResult:

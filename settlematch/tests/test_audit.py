@@ -15,17 +15,17 @@ from settlematch.matcher import Decision as MatcherDecision, MatchResult
 # ---------------------------------------------------------------------------
 
 def _make_match_result(decision=MatcherDecision.AUTO_APPROVED, **kwargs) -> MatchResult:
-    defaults = dict(
-        method="rule",
-        bank_utr="HDFC010124000001",
-        ledger_order_id="order_abc123",
-        amount_delta=0.00,
-        date_delta_days=1,
-        reason="All checks passed within tolerance.",
-        exception_category=None,
+    return MatchResult(
+        decision=decision,
+        method=str(kwargs.get("method", "rule")),
+        bank_utr=kwargs.get("bank_utr", "HDFC010124000001"),
+        ledger_order_id=kwargs.get("ledger_order_id", "order_abc123"),
+        amount_delta=kwargs.get("amount_delta", 0.00),
+        date_delta_days=kwargs.get("date_delta_days", 1),
+        reason=str(kwargs.get("reason", "All checks passed within tolerance.")),
+        candidates=kwargs.get("candidates", {}),
+        exception_category=kwargs.get("exception_category", None),
     )
-    defaults.update(kwargs)
-    return MatchResult(decision=decision, **defaults)
 
 
 def _make_settlement_row(**kwargs):

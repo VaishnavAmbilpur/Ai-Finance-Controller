@@ -208,7 +208,7 @@ def test_parse_llm_response():
 
 def test_get_model_default(monkeypatch):
     monkeypatch.delenv("OPENROUTER_MODEL", raising=False)
-    assert get_model() == "openrouter/free"
+    assert get_model() == "liquid/lfm-2.5-2.6b:free"
 
 
 def test_missing_api_key_raises_environment_error(monkeypatch):

@@ -84,9 +84,11 @@ m_col4.metric(
 )
 
 with st.expander("🔍 AI Adjudication Deep-Dive — How AI Resolved Discrepancies"):
-    llm_df = df[df["method"] == "llm"][
-        ["settlement_id", "decision", "bank_utr", "ledger_order_id", "reason"]
+    available_cols = [
+        c for c in ["settlement_id", "decision", "bank_utr", "ledger_order", "amount_delta", "reason"]
+        if c in df.columns
     ]
+    llm_df = df[df["method"] == "llm"][available_cols]
     if not llm_df.empty:
         st.write(
             "Below are the exact ambiguous records that strict rule engine could not match, and how AI adjudicated them:"

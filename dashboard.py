@@ -1,19 +1,19 @@
 # STREAMLIT DASHBOARD
-# Presentation layer — shows 4 metric cards, exception charts, audit log.
-# Under 80 lines. The judge sees numbers, clicks an exception, reads the reason.
+# Presentation layer — shows metrics, AI Impact (Before vs After), decision charts, audit log.
 # Run: python -m streamlit run dashboard.py
 
-import streamlit as st
-import pandas as pd
 import os
+import pandas as pd
+import streamlit as st
 
-from settlematch.generator import generate_dataset
 from main import run_pipeline
+from settlematch.generator import generate_dataset
 
 # Page config — wide layout for metric cards
-st.set_page_config(page_title="SettleMatch", layout="wide")
+st.set_page_config(page_title="SettleMatch — AI Finance Controller", layout="wide")
 
 AUDIT_PATH = "data/audit_log.csv"
+
 
 def _generate_and_run(seed=None):
     os.makedirs("data", exist_ok=True)
@@ -23,7 +23,8 @@ def _generate_and_run(seed=None):
     ledger.to_csv("data/merchant_ledger.csv", index=False)
     run_pipeline("data/settlement_report.csv", "data/bank_statement.csv", "data/merchant_ledger.csv")
 
-# HEADER: Title + inline small control button
+
+# HEADER: Title + inline control button
 col_header, col_btn = st.columns([3, 1], vertical_alignment="center")
 with col_header:
     st.title("SettleMatch — Reconciliation Results")
@@ -41,7 +42,6 @@ if not os.path.exists(AUDIT_PATH):
     with st.spinner("Initializing dataset and running SettleMatch pipeline for first launch..."):
         _generate_and_run(seed=42)
 
-
 # Load audit log and compute metrics
 df = pd.read_csv(AUDIT_PATH)
 total = len(df)
@@ -51,43 +51,89 @@ match_rate = round(matched / total * 100, 1) if total > 0 else 0.0
 llm_calls = len(df[df["method"] == "llm"])
 llm_rate = round(llm_calls / total * 100, 1) if total > 0 else 0.0
 
-# ROW 1: 4 metric cards at the top
+# ROW 1: 4 primary metric cards
 c1, c2, c3, c4 = st.columns(4)
-c1.metric("Match Rate", f"{match_rate}%")
-c2.metric("Total Records", total)
-c3.metric("LLM Call Rate", f"{llm_rate}%")
-c4.metric("Exceptions", exceptions)
+c1.metric("Overall Match Rate", f"{match_rate}%")
+c2.metric("Total Records Processed", total)
+c3.metric("LLM Escalation Rate", f"{llm_rate}%")
+c4.metric("Unresolved Exceptions", exceptions)
 
-# ROW 2: Decision distribution bar chart
-st.subheader("Decision Distribution")
-decision_counts = df["decision"].value_counts()
-st.bar_chart(decision_counts)
+st.divider()
 
-# ROW 3: Exception breakdown — only shows if there are exceptions
-st.subheader("Exception Breakdown")
-exc_df = df[~df["decision"].isin(["AUTO_APPROVED", "FUZZY_APPROVED", "BATCH_SPLIT_APPROVED", "LLM_MATCHED"])]
-if not exc_df.empty:
-    exc_counts = pd.Series(exc_df["decision"]).value_counts()
-    st.bar_chart(exc_counts)
-else:
-    st.success("No exceptions — all records matched!")
+# ROW 2: AI Impact Comparison (Before vs After AI Adjudication)
+st.subheader("🤖 AI Adjudicator Impact — Before vs After AI")
+
+pre_ai_exceptions = len(df[df["method"] == "llm"])
+ai_resolved = len(df[df["decision"] == "LLM_MATCHED"])
+post_ai_unresolved = len(df[df["decision"].isin(["LLM_ESCALATED", "MISSING_COUNTERPART"])])
+resolution_pct = round(ai_resolved / pre_ai_exceptions * 100, 1) if pre_ai_exceptions > 0 else 100.0
+
+m_col1, m_col2, m_col3, m_col4 = st.columns(4)
+m_col1.metric(
+    "Pre-AI Rule Discrepancies",
+    pre_ai_exceptions,
+    help="Flagged by strict rule engine (MDR fee variances, date lags)",
+)
+m_col2.metric("AI Adjudicated & Resolved", ai_resolved, delta=f"+{ai_resolved} matched")
+m_col3.metric("AI Resolution Efficiency", f"{resolution_pct}%")
+m_col4.metric(
+    "Post-AI Final Exceptions",
+    post_ai_unresolved,
+    delta=f"-{ai_resolved} resolved",
+    delta_color="inverse",
+)
+
+with st.expander("🔍 AI Adjudication Deep-Dive — How AI Resolved Discrepancies"):
+    llm_df = df[df["method"] == "llm"][
+        ["settlement_id", "decision", "bank_utr", "ledger_order_id", "reason"]
+    ]
+    if not llm_df.empty:
+        st.write(
+            "Below are the exact ambiguous records that strict rule engine could not match, and how AI adjudicated them:"
+        )
+        st.dataframe(llm_df, use_container_width=True)
+    else:
+        st.info("No records required AI adjudication in this run.")
+
+st.divider()
+
+# ROW 3: Decision distribution bar chart
+st.subheader("Decision Breakdown")
+col_chart, col_exc = st.columns(2)
+
+with col_chart:
+    st.markdown("**All Decision Outcomes**")
+    decision_counts = df["decision"].value_counts()
+    st.bar_chart(decision_counts)
+
+with col_exc:
+    st.markdown("**Unresolved Exception Breakdown**")
+    exc_df = df[
+        ~df["decision"].isin(["AUTO_APPROVED", "FUZZY_APPROVED", "BATCH_SPLIT_APPROVED", "LLM_MATCHED"])
+    ]
+    if not exc_df.empty:
+        exc_counts = pd.Series(exc_df["decision"]).value_counts()
+        st.bar_chart(exc_counts)
+    else:
+        st.success("🎉 All exceptions successfully resolved by AI!")
+
+st.divider()
 
 # ROW 4: Filterable audit log table with download button
-st.subheader("Audit Log")
-with st.expander("Filter & search audit log"):
+st.subheader("Audit Log & Export")
+with st.expander("Filter & search audit log", expanded=True):
     filter_decision = st.multiselect(
         "Filter by decision",
         options=df["decision"].unique(),
         default=df["decision"].unique(),
     )
     filtered = df[df["decision"].isin(filter_decision)]
-    st.dataframe(filtered, width="stretch", height=400)
+    st.dataframe(filtered, use_container_width=True, height=350)
 
-    # Download button — judge can download the full audit log
-    if st.button("Download audit_log.csv"):
-        st.download_button(
-            label="Download CSV",
-            data=df.to_csv(index=False),
-            file_name="audit_log.csv",
-            mime="text/csv",
-        )
+    # Download button
+    st.download_button(
+        label="📥 Download Complete Audit Log (CSV)",
+        data=df.to_csv(index=False),
+        file_name="audit_log.csv",
+        mime="text/csv",
+    )

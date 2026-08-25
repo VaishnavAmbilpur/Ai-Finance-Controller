@@ -37,6 +37,26 @@ with btn_col:
 
 st.divider()
 
+# SYSTEM OVERVIEW & HOW IT WORKS BANNER
+with st.expander("System Overview & How SettleMatch Works", expanded=True):
+    st.markdown("""
+    **What is SettleMatch?**  
+    SettleMatch is an **AI-powered 3-Way Reconciliation Controller** designed for payment gateways and e-commerce merchants. It automatically reconciles payment data across three financial sources:
+    1. **Razorpay Settlement Reports** (payout amounts, UTR numbers, gross/net fees)
+    2. **Bank Statements** (actual bank account credits & value dates)
+    3. **Merchant ERP Ledgers** (internal invoice orders, refunds, and receivables)
+    
+    ---
+    **How the Reconciliation Pipeline Operates:**
+    - **Step 1: Rule Engine (Fast Match)** — Instantly matches exact UTRs, 1-digit UTR typos, and multi-order batch deposits for 0 API cost.
+    - **Step 2: AI Finance Controller (Discrepancy Adjudication)** — Analyzes ambiguous records with fee differences, calculates MDR rates (1.5% - 2.5%), 18% GST tax, and refund timing, and automatically adjudicates matches.
+    - **Step 3: Audit Trail & Exception Management** — Produces a human-readable audit log with full financial reasoning and isolates true missing entries for manual review.
+    
+    *Click **"Generate New Data & Run Pipeline"** in the top right to simulate new randomized payment datasets and execute the pipeline.*
+    """)
+
+st.divider()
+
 # Auto-initialize dataset on first launch
 if not os.path.exists(AUDIT_PATH):
     with st.spinner("Initializing sample dataset and executing reconciliation pipeline..."):

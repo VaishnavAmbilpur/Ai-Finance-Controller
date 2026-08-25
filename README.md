@@ -69,11 +69,17 @@ flowchart TD
 | LLM_ESCALATED | 0 | LLM API timeout or validation fallback |
 | MISSING_COUNTERPART | 0 | No bank or ledger counterpart found |
 
-## Confidence Thresholds
+## Financial Fee Formulas & Calculation Transparency
 
-- **Amount tolerance:** ₹1.00 — absorbs paise rounding between Razorpay, bank, and merchant ERP
-- **Date tolerance:** 2 days — absorbs Razorpay's standard T+1/T+2 settlement cycle
-- **Fuzzy UTR threshold:** 93% Levenshtein similarity — catches 1-digit typos on 15+ char UTR strings
+SettleMatch uses transparent, deterministic financial calculations and strict thresholds:
+
+- **Merchant Discount Rate (MDR):** Standard Razorpay fee range between **1.5% and 2.2%** (`MDR Fee = Gross Amount × MDR Rate`).
+- **GST Tax on MDR:** Statutory **18.0% GST** applied to the MDR fee (`GST Tax = MDR Fee × 18%`).
+- **Net Payout Formula:** `Net Payout = Gross Amount - MDR Fee - GST Tax`.
+- **Amount Tolerance:** ₹1.00 — absorbs paise rounding drift between Razorpay payout reports, bank statements, and merchant ledgers.
+- **Date Window Tolerance:** 2 days — absorbs Razorpay's standard T+1 / T+2 settlement credit cycle.
+- **Fuzzy UTR Threshold:** 93% Levenshtein similarity — catches 1-digit typos on 15+ character UTR strings.
+- **AI Adjudication Threshold:** Up to 5% or ₹50 fee variance allowed for refund & MDR fee adjustment verification.
 
 ## What We Built (3-Day Build Plan)
 

@@ -130,7 +130,7 @@ def get_model() -> str:
         return model
     if os.environ.get("OPENAI_API_KEY") and not os.environ.get("OPENROUTER_API_KEY"):
         return "gpt-4o-mini"
-    return "google/gemini-2.5-flash:free"
+    return "openrouter/free"
 
 
 def _fmt(value) -> str:

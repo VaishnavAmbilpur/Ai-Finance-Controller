@@ -240,19 +240,44 @@ async def _call_llm_async(prompt: str) -> str:
     return response.choices[0].message.content or ""
 
 
+def _clean_json_text(text: str) -> str:
+    """
+    Extract JSON substring from markdown code blocks or surrounding text.
+    Handles ```json ... ``` wrappers and conversational preambles cleanly.
+    """
+    text = text.strip()
+    # Strip markdown ```json wrapper if present
+    if text.startswith("```"):
+        lines = text.splitlines()
+        if lines[0].startswith("```"):
+            lines = lines[1:]
+        if lines and lines[-1].startswith("```"):
+            lines = lines[:-1]
+        text = "\n".join(lines).strip()
+
+    # Extract substring between first '{' and last '}'
+    start = text.find("{")
+    end = text.rfind("}")
+    if start != -1 and end != -1 and end > start:
+        text = text[start : end + 1]
+
+    return text
+
+
 def _parse_llm_response(raw: str | None, last_error: str) -> AdjudicationResult:
     """
     Shared response-parsing logic used by both sync and async adjudicators.
     All error paths return ESCALATE_TO_HUMAN — never crashes.
     """
-    if raw is None:
+    if raw is None or not raw.strip():
         return AdjudicationResult(
             decision=DecisionType.ESCALATE_TO_HUMAN,
             reason=f"API error during adjudication after retry: {last_error[:200]}",
             confidence=0.0,
         )
     try:
-        parsed = json.loads(raw.strip())
+        cleaned = _clean_json_text(raw)
+        parsed = json.loads(cleaned)
         return AdjudicationResult(**parsed)  # Pydantic validates here — the real safety net
     except json.JSONDecodeError:
         snippet = raw.strip()[:100]

@@ -201,6 +201,12 @@ def test_parse_llm_response():
     assert _parse_llm_response(None, "err").decision == DecisionType.ESCALATE_TO_HUMAN
     assert _parse_llm_response("not json", "").decision == DecisionType.ESCALATE_TO_HUMAN
 
+def test_clean_json_text():
+    from settlematch.adjudicator import _clean_json_text
+    markdown = '```json\n{"decision": "MATCH", "reason": "Bank credit matches settlement exactly within MDR tolerance", "confidence": 0.95}\n```'
+    cleaned = _clean_json_text(markdown)
+    assert cleaned.startswith("{") and cleaned.endswith("}")
+
 
 # ---------------------------------------------------------------------------
 # Client & Model Configuration Tests

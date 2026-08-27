@@ -17,7 +17,7 @@ AUDIT_PATH = "data/audit_log.csv"
 
 def _generate_and_run(seed=None):
     os.makedirs("data", exist_ok=True)
-    settlements, bank, ledger = generate_dataset(n_records=65, seed=seed)
+    settlements, bank, ledger = generate_dataset(n_records=300, seed=seed)
     settlements.to_csv("data/settlement_report.csv", index=False)
     bank.to_csv("data/bank_statement.csv", index=False)
     ledger.to_csv("data/merchant_ledger.csv", index=False)

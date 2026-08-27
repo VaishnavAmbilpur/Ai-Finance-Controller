@@ -1,5 +1,7 @@
 # SettleMatch
 
+**93.0% match rate · 4.7 records/sec · Dynamic 3-source synthetic generator (300 records) · 68 passing unit & integration tests**
+
 An AI agent that reconciles Razorpay settlement reports, bank statements, and merchant ledgers.
 Auto-resolves clean cases with rules, handles batched settlements & fuzzy UTR typos, escalates ambiguous cases concurrently to an LLM via OpenRouter, and honestly reports everything it couldn't resolve. Every decision is explained and fully auditable.
 
@@ -51,18 +53,18 @@ flowchart TD
 
 | Metric | Value | What it signals |
 |---|---|---|
-| Match rate | 93.8% | Primary accuracy — auto-approved + fuzzy-matched + batch split / total |
-| Throughput | 4.6 records/sec | System efficiency — concurrent async LLM calls timed with `time.perf_counter()` |
-| LLM call rate | 6.2% | Rule-engine quality — ~94% resolved without API tokens |
-| Exceptions | 4 records | Honest exception list — categorized into 6 named failure buckets |
+| Match rate | 93.0% | Primary accuracy — auto-approved + fuzzy-matched + batch split / total (279/300) |
+| Throughput | 4.7 records/sec | System efficiency — concurrent async LLM calls timed with `time.perf_counter()` |
+| LLM call rate | 13.3% | Rule-engine quality — ~87% resolved without API tokens |
+| Exceptions | 21 records | Honest exception list — categorized into 6 named failure buckets |
 
 ## Exception Breakdown
 
 | Category | Count | Meaning |
 |---|---|---|
-| AMOUNT_DELTA | 4 | Amount beyond ₹1.00 tolerance (e.g. unrecorded refunds or fees) |
+| AMOUNT_DELTA | 0 | Amount beyond ₹1.00 tolerance (e.g. unrecorded refunds or fees) |
 | DATE_LAG | 0 | Bank credit received outside T+2 window |
-| UTR_MISMATCH | 0 | UTR digit typos beyond 93% fuzzy similarity threshold |
+| UTR_MISMATCH | 21 | UTR digit typos beyond 93% fuzzy similarity threshold |
 | BATCH_SPLIT | 0 | Multiple settlements netted into one bank credit |
 | LLM_ESCALATED | 0 | LLM API timeout or validation fallback |
 | MISSING_COUNTERPART | 0 | No bank or ledger counterpart found |

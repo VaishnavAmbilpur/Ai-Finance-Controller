@@ -76,13 +76,13 @@ def calculate_net_amount(gross: float, mdr_rate: float | None = None) -> dict:
 
 
 def generate_dataset(
-    n_records: int = 65, seed: int | None = None
+    n_records: int = 300, seed: int | None = 42
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
     Main generator: creates n_records across 3 data sources with high randomness.
 
     Args:
-        n_records: Number of settlement records to generate (default: 65)
+        n_records: Number of settlement records to generate (default: 300)
         seed: Optional integer seed for reproducibility. If None, uses dynamic entropy.
 
     Returns:

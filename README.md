@@ -11,7 +11,7 @@ pinned: false
 
 # SettleMatch
 
-**93.0% match rate · 36.6 records/sec · Dynamic 3-source synthetic generator (300 records) · 69 passing unit & integration tests**
+**93.0% match rate · 36.6 records/sec · Dynamic 3-source synthetic generator (300 records) · 70 passing unit & integration tests**
 
 An AI agent that reconciles Razorpay settlement reports, bank statements, and merchant ledgers.
 Auto-resolves clean cases with rules, handles batched settlements & fuzzy UTR typos, escalates ambiguous cases concurrently to an LLM via OpenRouter, and honestly reports everything it couldn't resolve. Every decision is explained and fully auditable.
@@ -112,7 +112,7 @@ SettleMatch records a transparent, audit-ready decision string for every transac
 | Day | Focus | Output / Key Accomplishments |
 |---|---|---|
 | Day 1 | Data generator + rule matcher + fuzzy UTR + initial tests | 18 baseline unit tests |
-| Day 2 | Async LLM adjudicator + pre-normalized matcher + O(1) batch lookup + audit log backup + eval harness | 69 unit & integration tests, high-throughput async processing |
+| Day 2 | Async LLM adjudicator + pre-normalized matcher + O(1) batch lookup + audit log backup + eval harness | 70 unit & integration tests, high-throughput async processing |
 | Day 3 | Dashboard + final performance tuning + video presentation | Streamlit interactive UI & audit download |
 
 ## What Broke (The "What Broke" Story)
@@ -135,7 +135,7 @@ pip install -r requirements.txt
 cp .env.example .env          # add your OPENROUTER_API_KEY
 python generate_data.py       # generates dynamic randomized CSVs in data/
 python main.py                # runs full async pipeline, prints metrics
-python -m pytest settlematch/tests/ -v   # runs 68 unit & integration tests
+python -m pytest settlematch/tests/ -v   # runs 70 unit & integration tests
 python -m streamlit run dashboard.py     # launches Streamlit interactive UI
 ```
 

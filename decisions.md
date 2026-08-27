@@ -53,12 +53,13 @@ This document records all key technical decisions, bug fixes, benchmark choices,
 
 ---
 
-## 6. Async Concurrency Optimization
+## 6. Async Concurrency Optimization & Throughput Benchmarks
 
 * **Decision:** Implemented `AsyncOpenAI` + `asyncio.gather` in [`settlematch/adjudicator.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/settlematch/adjudicator.py) and [`main.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/main.py).
-* **Rationale:**
-  * Replaced sequential blocking LLM API calls with concurrent execution.
-  * Increased processing throughput to **36.6 records/sec**, keeping wall-clock time under 10 seconds for 300 records.
+* **Rationale & Benchmark Measurements ($n=300$):**
+  * **Sequential Blocking Pipeline (Day 1 baseline):** ~0.8 records/sec (1–5s blocking wait per LLM call).
+  * **Live Network OpenRouter Pipeline:** **4.7 records/sec** (64.1s total wall-clock time over live HTTP API calls).
+  * **Async Execution Engine Benchmark:** **36.6 records/sec** (8.2s total wall-clock time with non-blocking concurrent event loop processing).
 
 ---
 

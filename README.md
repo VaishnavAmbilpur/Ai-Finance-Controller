@@ -1,14 +1,3 @@
----
-title: SettleMatch AI Finance Controller
-emoji: ⚖️
-colorFrom: blue
-colorTo: indigo
-sdk: streamlit
-sdk_version: "1.38.0"
-app_file: dashboard.py
-pinned: false
----
-
 # SettleMatch
 
 **93.0% match rate · 36.6 records/sec · Dynamic 3-source synthetic generator (300 records) · 70 passing unit & integration tests**

@@ -1,0 +1,301 @@
+timestamp,settlement_id,decision,method,bank_utr,ledger_order,amount_delta,reason
+2026-08-27 13:21:07,setl_holqc3o18a5ur7,AUTO_APPROVED,rule,UTIB040826889373467,order_tul1p36p6qf5q1,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_mx2x18hafeyuhz,BATCH_SPLIT_APPROVED,batch,68014.85,order_bmyofqewaouaxe,₹0.00,Batch split: 2 settlements (total ₹68014.85) match single bank credit ₹68014.85 (delta ₹0.0).
+2026-08-27 13:21:07,setl_71q3vli7kq1uym,AUTO_APPROVED,rule,IDFB130726354549480,order_7hv3izky22ubtx,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_r09skdgigatj9t,AUTO_APPROVED,rule,IDFB280726109477752,order_dzr1yxr2dhylur,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_xfgcaqvkizzqy7,AUTO_APPROVED,rule,ICIC210726832421024,order_7r3ocwbfuk9e1v,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_qoldforxo1bdje,BATCH_SPLIT_APPROVED,batch,68014.85,order_qkojtpv60vaiy4,₹0.00,Batch split: 2 settlements (total ₹68014.85) match single bank credit ₹68014.85 (delta ₹0.0).
+2026-08-27 13:21:07,setl_55j2o7s3kkv9rf,AUTO_APPROVED,rule,PUNB180726867533963,order_t7pze9vifttd96,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_lz15bcw790pdw5,LLM_MATCHED,llm,HDFC050826050455623,order_z3nx39rbsv55ps,₹0.00,"AI Adjudicator: Verified Bank credit ₹19,575.82 (UTR HDFC050826050455623) matches Merchant Ledger net receivable ₹19,575.82 (Order order_z3nx39rbsv55ps) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_k9xjuy0bvr6k2v,AUTO_APPROVED,rule,KKBK270726210470952,order_c5wi6fqjja26yf,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_v37dia5u6hc36k,AUTO_APPROVED,rule,HDFC090726471138267,order_et8t63j3r30me8,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_h3tv3i12vj99t2,AUTO_APPROVED,rule,HDFC120726539502402,order_5x4w7kyhqin9n6,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ex5t5p5o3o0llj,FUZZY_APPROVED,fuzzy,ICIC100726117152809,order_qhw06xkxb94pdz,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_fwb0hpmnz1udbf,AUTO_APPROVED,rule,IDFB160726679764381,order_muhxid4n1u3493,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_g8qynpdpoc50h2,BATCH_SPLIT_APPROVED,batch,26678.35,order_9bh811kerpetiu,₹0.00,Batch split: 2 settlements (total ₹26678.35) match single bank credit ₹26678.35 (delta ₹0.0).
+2026-08-27 13:21:07,setl_ugvs8q349dxbz9,BATCH_SPLIT_APPROVED,batch,26678.35,order_y5x9l8lpqw2vmc,₹0.00,Batch split: 2 settlements (total ₹26678.35) match single bank credit ₹26678.35 (delta ₹0.0).
+2026-08-27 13:21:07,setl_4d145bm1enf313,AUTO_APPROVED,rule,UTIB090726537947383,order_ufm8zov7ln23y3,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_x2ek3zezqacj4t,AUTO_APPROVED,rule,KKBK110726341036971,order_2ejx5td44k1j6f,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_qzw3c1qkbhb7s9,AUTO_APPROVED,rule,AXIS090726450541566,order_ioxd9css9toqw9,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_bc2nnuvy8n1uto,LLM_MATCHED,llm,ICIC070826027868144,order_cv3tlcxlvpymb5,₹359.42,"AI Adjudicator: Verified Bank credit ₹28,318.69 (UTR ICIC070826027868144) matches Merchant Ledger net receivable ₹28,318.69 (Order order_cv3tlcxlvpymb5) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_roouelcqse3tv1,BATCH_SPLIT_APPROVED,batch,45477.14,order_9389yztkkfzzgn,₹0.00,Batch split: 3 settlements (total ₹45477.14) match single bank credit ₹45477.14 (delta ₹0.0).
+2026-08-27 13:21:07,setl_qmf5l9mo1sdieq,AUTO_APPROVED,rule,UTIB170726963259532,order_vugw6m7b5c81jh,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_nfvobbz2sf6f7l,AUTO_APPROVED,rule,YESB260726888794705,order_bkv4ykadejnobb,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_mm1zxyvgiui9kk,AUTO_APPROVED,rule,IDFB180726584419866,order_vgww4fyb8dalfy,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_76g5g79or7875a,AUTO_APPROVED,rule,YESB060826478872874,order_ewviytwbozd1at,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_whef0votqtxhi1,BATCH_SPLIT_APPROVED,batch,45477.14,order_3sdygfliji18k0,₹0.00,Batch split: 3 settlements (total ₹45477.14) match single bank credit ₹45477.14 (delta ₹0.0).
+2026-08-27 13:21:07,setl_yxtxmgtt0iaaky,AUTO_APPROVED,rule,AXIS030826375243106,order_qcq30o30ubmc97,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_1r4kz36u8ueihx,AUTO_APPROVED,rule,PUNB100726304699013,order_sk30lvylkfxhkc,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_r00q0mftg698s4,AUTO_APPROVED,rule,HDFC010826623120387,order_qxlm5q201lhlb5,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_67i6yuj7yktxg4,AUTO_APPROVED,rule,SBIN260726614293968,order_siwjm2c8qizk3c,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_vlnknd669ugnek,AUTO_APPROVED,rule,UTIB130726464715437,order_m7pyxdw2zcfzw0,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_yfkjfpnqvut75p,AUTO_APPROVED,rule,PUNB300726911352909,order_vzrgol0w82lk2n,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_2wgxo05qpahkz2,AUTO_APPROVED,rule,YESB190726371478596,order_rk7d30mm2smdzq,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_k2u1rsujt9t11p,AUTO_APPROVED,rule,AXIS110726407451713,order_prt77ggkg4w58r,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_qru54d8wz42o83,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for KKBK030826589297500.
+2026-08-27 13:21:07,setl_uvfmh07wph6fe0,AUTO_APPROVED,rule,SBIN180726341389994,order_01pddhcvsqame4,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ow4ycz04cdpqvl,AUTO_APPROVED,rule,HDFC110726202758842,order_e4uny181acjbc2,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_98cqk4ltahukwq,FUZZY_APPROVED,fuzzy,AXIS010826832070385,order_jdu0isb5iqnf74,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_d3kzvh4fz8obk3,LLM_MATCHED,llm,IDFB040826883171210,order_swovcxek47o3lq,₹54.29,"AI Adjudicator: Verified Bank credit ₹7,687.35 (UTR IDFB040826883171210) matches Merchant Ledger net receivable ₹7,687.35 (Order order_swovcxek47o3lq) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_r6snglh62c9t19,AUTO_APPROVED,rule,AXIS150726480396522,order_3obyghgk5bwiko,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_mx3n0kgazu41ug,AUTO_APPROVED,rule,BARB280726172513552,order_3mg25cfzfdsncz,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ibu4fmpkxvhagk,AUTO_APPROVED,rule,UTIB170726774186256,order_c4kl8cgn0t6dvw,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_2wspofv177udkt,FUZZY_APPROVED,fuzzy,UTIB160726799802462,order_s62ywe1g983ep9,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_f60yknfu84xyjo,BATCH_SPLIT_APPROVED,batch,45477.14,order_3sflse45bg34iq,₹0.00,Batch split: 3 settlements (total ₹45477.14) match single bank credit ₹45477.14 (delta ₹0.0).
+2026-08-27 13:21:07,setl_ej31gymdm0l2lj,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for HDFC230726999173816.
+2026-08-27 13:21:07,setl_m6mg87oi0e0vgn,LLM_MATCHED,llm,KKBK200726890901001,order_wo8nbhnal3gywi,₹222.97,"AI Adjudicator: Verified Bank credit ₹28,584.69 (UTR KKBK200726890901001) matches Merchant Ledger net receivable ₹28,584.69 (Order order_wo8nbhnal3gywi) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_d1b4xgmpw5d3go,LLM_MATCHED,llm,UTIB030826762120216,order_kbrh7lay64yfds,₹457.83,"AI Adjudicator: Verified Bank credit ₹41,829.67 (UTR UTIB030826762120216) matches Merchant Ledger net receivable ₹41,829.67 (Order order_kbrh7lay64yfds) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_0aobt328w6uxqm,AUTO_APPROVED,rule,IDFB040826589975711,order_rxxf36wa7sqrf1,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_oz0kz4z7whwkmy,AUTO_APPROVED,rule,PUNB240726515879968,order_x8ertb74rs7gu0,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_f4aq7b7v1w4k2t,LLM_MATCHED,llm,AXIS240726281826886,order_o2y8b0h54piwzn,₹68.67,"AI Adjudicator: Verified Bank credit ₹3,269.35 (UTR AXIS240726281826886) matches Merchant Ledger net receivable ₹3,269.35 (Order order_o2y8b0h54piwzn) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_nwpaytxw1vzc7d,AUTO_APPROVED,rule,ICIC270726476607283,order_8g8tacy15pdtz9,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_q1rdxck36h0w06,AUTO_APPROVED,rule,BARB030826969308488,order_jhu8myikcgrlxy,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_skffv3xoleyrvx,FUZZY_APPROVED,fuzzy,SBIN091726992280920,order_75bxd8wj0uunnv,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_16dvtja0assnh2,BATCH_SPLIT_APPROVED,batch,23251.32,order_g6v5t1dx6ta7yp,₹0.00,Batch split: 2 settlements (total ₹23251.32) match single bank credit ₹23251.32 (delta ₹0.0).
+2026-08-27 13:21:07,setl_joyohaz7t0uum3,FUZZY_APPROVED,fuzzy,UTIB220726905268181,order_djnv07oxk8c1gr,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_65r96khub2rtso,AUTO_APPROVED,rule,ICIC220726875003691,order_rm6j8y6rh05hhi,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_2myr06nkwfg3mw,FUZZY_APPROVED,fuzzy,SBIN100726535544965,order_94sz2kuuoyc3rw,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_qa78rapkianouo,LLM_MATCHED,llm,UTIB030826341638944,order_4lr9tjq8zgvwwu,₹0.00,"AI Adjudicator: Verified Bank credit ₹7,278.65 (UTR UTIB030826341638944) matches Merchant Ledger net receivable ₹7,278.65 (Order order_4lr9tjq8zgvwwu) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_55hewlgje2ab2r,AUTO_APPROVED,rule,ICIC010826327195005,order_cqg433e1i1p0bq,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_nrwvbhza7x73qx,AUTO_APPROVED,rule,YESB030826094801413,order_1s05wnwlc83gy1,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_uuhclrr6z3dxb3,AUTO_APPROVED,rule,YESB060826566139060,order_mq8abkae6a9hl1,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_3km2kql0ht1tw9,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for BARB200726804204394.
+2026-08-27 13:21:07,setl_se99f77lu8el50,FUZZY_APPROVED,fuzzy,UTIB070826474231320,order_563btkf6xdn8ww,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_qxdsgv6tolaq66,AUTO_APPROVED,rule,YESB160726211175186,order_o7utxzbdq55it9,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_cptkezjsszwd0w,AUTO_APPROVED,rule,BARB310726469548995,order_wu3bfxb4y4k7bp,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ov51zlboriq8hk,BATCH_SPLIT_APPROVED,batch,23251.32,order_62xrw6tm2o04k0,₹0.00,Batch split: 2 settlements (total ₹23251.32) match single bank credit ₹23251.32 (delta ₹0.0).
+2026-08-27 13:21:07,setl_91qe37qqyzqii4,AUTO_APPROVED,rule,SBIN200726557701715,order_hmlfzkicwmpeqy,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_mda9oekntbz3m5,LLM_MATCHED,llm,BARB210726656666832,order_8cd31nrxd356wa,₹250.56,"AI Adjudicator: Verified Bank credit ₹37,920.32 (UTR BARB210726656666832) matches Merchant Ledger net receivable ₹37,920.32 (Order order_8cd31nrxd356wa) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_rgb93wkcs4kek4,LLM_MATCHED,llm,SBIN270726927524372,order_qc6dr08cw2lbm2,₹193.75,AI Adjudicator: Verified Bank credit ₹579.32 (UTR SBIN270726927524372) matches Merchant Ledger net receivable ₹579.32 (Order order_qc6dr08cw2lbm2) after accounting for MDR/refund deductions.
+2026-08-27 13:21:07,setl_8wze4ex6u86zjq,AUTO_APPROVED,rule,KKBK060826654214066,order_mjdxo100vhmygt,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_fgzvrctlt4q9bc,AUTO_APPROVED,rule,ICIC200726387829310,order_83ru7myow8dt8c,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_2maietdn1th1xj,AUTO_APPROVED,rule,IDFB290726722005436,order_7bd4w1aragdx5o,₹0.26,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_6pb90spo3zdrc1,LLM_MATCHED,llm,AXIS070826254310742,order_dqp1hkf286utio,₹0.00,"AI Adjudicator: Verified Bank credit ₹30,427.28 (UTR AXIS070826254310742) matches Merchant Ledger net receivable ₹30,427.28 (Order order_dqp1hkf286utio) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_og8cfeffh8aoy7,BATCH_SPLIT_APPROVED,batch,38104.35,order_015z11l6spbnqs,₹0.00,Batch split: 3 settlements (total ₹38104.35) match single bank credit ₹38104.35 (delta ₹0.0).
+2026-08-27 13:21:07,setl_hmlvhs21hd4y89,AUTO_APPROVED,rule,BARB180726980562656,order_ea7187f8tsxk68,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_qymbnw8bkxcgw1,AUTO_APPROVED,rule,YESB250726544518952,order_fkxwexkg6xb1r8,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_z8g1a0774rzgyd,LLM_MATCHED,llm,AXIS210726836151718,order_bxvq6bkadevvhy,₹89.56,"AI Adjudicator: Verified Bank credit ₹36,522.84 (UTR AXIS210726836151718) matches Merchant Ledger net receivable ₹36,522.84 (Order order_bxvq6bkadevvhy) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_st3ta195eq4pbg,FUZZY_APPROVED,fuzzy,SBIN050826762477197,order_my89sfqeri7b03,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_utpmc3skxlojsy,AUTO_APPROVED,rule,PUNB280726297374896,order_uldryhr3yfk8hw,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_tzetrij2frnlx6,AUTO_APPROVED,rule,AXIS300726486451837,order_o44iusexu1srdv,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_as173rih83j0np,BATCH_SPLIT_APPROVED,batch,38104.35,order_5egvlkdnon4uaa,₹0.00,Batch split: 3 settlements (total ₹38104.35) match single bank credit ₹38104.35 (delta ₹0.0).
+2026-08-27 13:21:07,setl_r45ed5ggsj6vv8,LLM_MATCHED,llm,ICIC210726371504165,order_7k5w1jl6l91f4x,₹0.00,"AI Adjudicator: Verified Bank credit ₹23,251.52 (UTR ICIC210726371504165) matches Merchant Ledger net receivable ₹23,251.52 (Order order_7k5w1jl6l91f4x) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_bcbdpdxujjcsex,BATCH_SPLIT_APPROVED,batch,38104.35,order_5rup13wppbmqiy,₹0.00,Batch split: 3 settlements (total ₹38104.35) match single bank credit ₹38104.35 (delta ₹0.0).
+2026-08-27 13:21:07,setl_prr7mzakgmih6m,AUTO_APPROVED,rule,KKBK120726665729341,order_4vhu4bawz940vt,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_68sy7p1zscmo1p,AUTO_APPROVED,rule,SBIN290726908466845,order_0z1r5fn3eh81a4,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_7r93fezez5ehr0,AUTO_APPROVED,rule,ICIC060826961159408,order_k2zyzsilu3ndz3,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_nd9tkg1f8yc8gz,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for SBIN180726654610339.
+2026-08-27 13:21:07,setl_z1t2xcb3yym33m,AUTO_APPROVED,rule,IDFB110726537030453,order_oefukpv8lymj1q,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_icvpdqe97n6y2c,AUTO_APPROVED,rule,BARB170726611080466,order_7tlom539iy87hl,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_o3aamtfpw6m9hk,BATCH_SPLIT_APPROVED,batch,43021.2,order_9xhcgryqy4umkl,₹0.00,Batch split: 2 settlements (total ₹43021.2) match single bank credit ₹43021.2 (delta ₹0.0).
+2026-08-27 13:21:07,setl_apjc6kstcjiemt,LLM_MATCHED,llm,KKBK160726439284044,order_ruw2xh6qihpnf4,₹415.60,"AI Adjudicator: Verified Bank credit ₹14,346.63 (UTR KKBK160726439284044) matches Merchant Ledger net receivable ₹14,346.63 (Order order_ruw2xh6qihpnf4) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_5ehpzrv7vsyjaf,AUTO_APPROVED,rule,AXIS270726859777901,order_duq6ddtbyrgc8k,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_117nidp9mgyh52,AUTO_APPROVED,rule,SBIN310726068155839,order_f34gadktoc1yfm,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_vnlpa5cgwfhdv3,FUZZY_APPROVED,fuzzy,ICIC240826674233629,order_cnkfhb7v80lkx1,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_z9c65fpyst5v01,AUTO_APPROVED,rule,BARB110726524364027,order_11mzwncnpir7nz,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_3lpvowcp779460,AUTO_APPROVED,rule,SBIN300726898027148,order_xncmldqz05ev5k,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_7i07140k36faop,AUTO_APPROVED,rule,UTIB010826618443861,order_a4l3khyfk043bl,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_t2eehfu4b9sntp,AUTO_APPROVED,rule,KKBK150726084872975,order_2grxpudc62g3au,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_b09zivzg92sjp7,AUTO_APPROVED,rule,ICIC170726465111312,order_g0l3rtz5tv6g8o,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_hgbo06fhrxjpt2,LLM_MATCHED,llm,UTIB010826862110225,order_ma6gmdrdsferfx,₹0.00,"AI Adjudicator: Verified Bank credit ₹31,427.66 (UTR UTIB010826862110225) matches Merchant Ledger net receivable ₹31,427.66 (Order order_ma6gmdrdsferfx) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_vb853gqd7wkr1t,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for UTIB140726848557161.
+2026-08-27 13:21:07,setl_gr0xafgovcci68,FUZZY_APPROVED,fuzzy,HDFC310826916601002,order_g8t922d0nx5wt3,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_trtidzs13hdnh4,AUTO_APPROVED,rule,SBIN070826105524728,order_2592ffq293ep0f,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_dl918slomeyl6s,LLM_MATCHED,llm,BARB080726679042271,order_rxonbnpjdn2mif,₹445.47,"AI Adjudicator: Verified Bank credit ₹21,758.98 (UTR BARB080726679042271) matches Merchant Ledger net receivable ₹21,758.98 (Order order_rxonbnpjdn2mif) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_t8fhu91c329hha,BATCH_SPLIT_APPROVED,batch,43021.2,order_zufdnu4i5ymqt3,₹0.00,Batch split: 2 settlements (total ₹43021.2) match single bank credit ₹43021.2 (delta ₹0.0).
+2026-08-27 13:21:07,setl_piqnhqe86o3z0a,BATCH_SPLIT_APPROVED,batch,23193.09,order_egpgvtn4ypkw74,₹0.00,Batch split: 2 settlements (total ₹23193.09) match single bank credit ₹23193.09 (delta ₹0.0).
+2026-08-27 13:21:07,setl_sjevts1hn6bedy,AUTO_APPROVED,rule,AXIS230726158477686,order_jgc46hd2orwhp6,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_mc1rbk9rx647di,AUTO_APPROVED,rule,YESB110726632135800,order_hbrbjeqvviaa2u,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_vsdbide6uitj5z,AUTO_APPROVED,rule,AXIS110726473235494,order_8udqddaqjrtmet,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_yqf8wxkk2abkvb,AUTO_APPROVED,rule,HDFC190726042548821,order_g8w85y6q8sjy5o,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_aso7krgi4jwpxe,BATCH_SPLIT_APPROVED,batch,23193.09,order_3uy5evszzsu8e6,₹0.00,Batch split: 2 settlements (total ₹23193.09) match single bank credit ₹23193.09 (delta ₹0.0).
+2026-08-27 13:21:07,setl_da8dbfa1u5my80,BATCH_SPLIT_APPROVED,batch,84913.86,order_d50n97cjb0pnwb,₹0.00,Batch split: 3 settlements (total ₹84913.86) match single bank credit ₹84913.86 (delta ₹0.0).
+2026-08-27 13:21:07,setl_u9az3cegbmxikv,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for ICIC290726148375374.
+2026-08-27 13:21:07,setl_r4hc7jvlcg1j5e,BATCH_SPLIT_APPROVED,batch,84913.86,order_fn07ea28ditmow,₹0.00,Batch split: 3 settlements (total ₹84913.86) match single bank credit ₹84913.86 (delta ₹0.0).
+2026-08-27 13:21:07,setl_cp9uw165aejt70,AUTO_APPROVED,rule,UTIB030826021288665,order_i1nq0ei05nms6x,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_sjws1zl7p72l4x,AUTO_APPROVED,rule,HDFC070826329633472,order_8t2a3ah7u0s3kd,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_lh07ba7dorfki1,FUZZY_APPROVED,fuzzy,ICIC410726662411186,order_loufhw8wlva02d,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_okpk7yswnxfshw,LLM_MATCHED,llm,IDFB230726352287056,order_y12tlxlzs49cdz,₹110.13,"AI Adjudicator: Verified Bank credit ₹31,324.28 (UTR IDFB230726352287056) matches Merchant Ledger net receivable ₹31,324.28 (Order order_y12tlxlzs49cdz) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_psaldnj7vbjrbz,AUTO_APPROVED,rule,HDFC260726797727810,order_t54884z4ur2yup,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_shhj7swrqlux6l,AUTO_APPROVED,rule,HDFC040826267551254,order_4jh9jpdmn1s3yg,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_b8pfy4qcyd52al,AUTO_APPROVED,rule,IDFB290726076604641,order_30pocr0vhv1nm3,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_2xjq2wdizhw0vq,AUTO_APPROVED,rule,UTIB250726780555572,order_g0z0c682u9wt2y,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_77lk6hqiv929se,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for SBIN040826371006876.
+2026-08-27 13:21:07,setl_3260nbw8sj84tc,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for PUNB260726334233720.
+2026-08-27 13:21:07,setl_m0qpop1o8m291a,AUTO_APPROVED,rule,KKBK290726450566588,order_1hsltdkvuff124,₹0.73,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_3paua3aipjiylq,LLM_MATCHED,llm,BARB050826232342108,order_2ruw0u92t24d7v,₹0.00,"AI Adjudicator: Verified Bank credit ₹29,285.42 (UTR BARB050826232342108) matches Merchant Ledger net receivable ₹29,285.42 (Order order_2ruw0u92t24d7v) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_6bnvsfa6d9er94,AUTO_APPROVED,rule,BARB040826047742585,order_1c25xnofg7803g,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_w4i7zt8phb8oos,AUTO_APPROVED,rule,YESB220726240148439,order_emqt788g35sfy1,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_73w1yaua8d7204,AUTO_APPROVED,rule,AXIS190726470574238,order_xd2zu4ns7nvv28,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ztd3imz93ij4qp,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for SBIN070826087805721.
+2026-08-27 13:21:07,setl_dyvgdgfwmqx327,LLM_MATCHED,llm,AXIS180726523736050,order_l2uncgwrt9dyfn,₹460.39,"AI Adjudicator: Verified Bank credit ₹29,147.53 (UTR AXIS180726523736050) matches Merchant Ledger net receivable ₹29,147.53 (Order order_l2uncgwrt9dyfn) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_cef2ctg08zzkk4,AUTO_APPROVED,rule,AXIS200726187328077,order_7ofvwj7yz6l7x6,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_pnnlo0hhgh5xw6,AUTO_APPROVED,rule,KKBK190726362718749,order_m9q7ftmfwg895n,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ilqpb01qcte9w0,AUTO_APPROVED,rule,IDFB140726660465586,order_5cekof92y8lz8c,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_r1l9gvbmqq749q,AUTO_APPROVED,rule,SBIN120726660256265,order_tx8j1ccm0w3c1z,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_e00h2k2p3ajfax,BATCH_SPLIT_APPROVED,batch,84913.86,order_crv68jq12jf4ci,₹0.00,Batch split: 3 settlements (total ₹84913.86) match single bank credit ₹84913.86 (delta ₹0.0).
+2026-08-27 13:21:07,setl_xsogb205hu03y5,LLM_MATCHED,llm,HDFC220726394380403,order_tbvhuazun6fht6,₹419.05,"AI Adjudicator: Verified Bank credit ₹35,542.77 (UTR HDFC220726394380403) matches Merchant Ledger net receivable ₹35,542.77 (Order order_tbvhuazun6fht6) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_mpv5lmq15fbs4w,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for BARB040826236161880.
+2026-08-27 13:21:07,setl_ldf4hra1361bgm,AUTO_APPROVED,rule,IDFB150726112229907,order_i9bl14hoae527p,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_7ktll8sn5yz7vx,AUTO_APPROVED,rule,ICIC180726758891444,order_ay7ov50ew25x1f,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_fghdiluvnhdczp,FUZZY_APPROVED,fuzzy,BARB040827608437685,order_mwjpiwujt4ftlh,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_x1cnaq2yotos87,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for KKBK010826862872031.
+2026-08-27 13:21:07,setl_3m0nq8ut60wlfy,AUTO_APPROVED,rule,BARB020826330674584,order_f1hwjhbaepg25p,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_iffcvedqfc1yuz,AUTO_APPROVED,rule,PUNB060826943705263,order_vws3kcvjxzdvyb,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ycx8ae0jxyo6hf,FUZZY_APPROVED,fuzzy,PUNB171726811210314,order_8qop82j3tps82x,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_43tuyktk61b7px,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for ICIC120726190170756.
+2026-08-27 13:21:07,setl_qyjrofh6airh8s,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for YESB160726841484601.
+2026-08-27 13:21:07,setl_qwb00n114py4fn,BATCH_SPLIT_APPROVED,batch,16814.07,order_7r925dsiuaz71u,₹0.00,Batch split: 3 settlements (total ₹16814.07) match single bank credit ₹16814.07 (delta ₹0.0).
+2026-08-27 13:21:07,setl_2lqsqbbx5nwd0j,FUZZY_APPROVED,fuzzy,ICIC260727362483550,order_r2p6xcw8afmne6,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_3gsv5e033dzqq5,BATCH_SPLIT_APPROVED,batch,16814.07,order_l25s8t6aidizs3,₹0.00,Batch split: 3 settlements (total ₹16814.07) match single bank credit ₹16814.07 (delta ₹0.0).
+2026-08-27 13:21:07,setl_dwr1xfhsj0bi6a,AUTO_APPROVED,rule,AXIS010826543788260,order_sd0p4775b5nov3,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_jti2lswbb8ria4,FUZZY_APPROVED,fuzzy,UTIB060826101683123,order_mt4fvmypj2nnoc,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_q2yggafdr3tgwj,AUTO_APPROVED,rule,BARB130726857973638,order_erumehcykjb85l,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_44esh9bxlsogwi,LLM_MATCHED,llm,HDFC050826566957900,order_81bxd7itqrt8g7,₹344.68,"AI Adjudicator: Verified Bank credit ₹2,073.33 (UTR HDFC050826566957900) matches Merchant Ledger net receivable ₹2,073.33 (Order order_81bxd7itqrt8g7) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_vrc0erje4s4mfe,AUTO_APPROVED,rule,HDFC210726598678744,order_lld0n53r4sip4b,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_40nxidb5z8xgqh,AUTO_APPROVED,rule,BARB060826920522299,order_05sorhtmt1ozxg,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_gwhaoqhvd8fbff,AUTO_APPROVED,rule,IDFB040826672019111,order_hkk7x34udc4fh0,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_1qp2wnv2mk48j4,AUTO_APPROVED,rule,UTIB220726010801810,order_fwpzdpvoe4t8dl,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_v9wxhvy3nukond,AUTO_APPROVED,rule,HDFC070826779433256,order_xejaxvt7cz14wj,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_px4ntz7pjsfpfm,LLM_MATCHED,llm,YESB060826936488208,order_jvie6dueprtiry,₹0.00,"AI Adjudicator: Verified Bank credit ₹17,098.65 (UTR YESB060826936488208) matches Merchant Ledger net receivable ₹17,098.65 (Order order_jvie6dueprtiry) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_v1topi9xdulvna,AUTO_APPROVED,rule,SBIN020826489420466,order_ztlsuy5lv92bee,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_lj29jb8jxkq054,BATCH_SPLIT_APPROVED,batch,16814.07,order_24wpfdfhj05mpz,₹0.00,Batch split: 3 settlements (total ₹16814.07) match single bank credit ₹16814.07 (delta ₹0.0).
+2026-08-27 13:21:07,setl_g57zuhfbeggacs,AUTO_APPROVED,rule,HDFC110726089876108,order_4yji359t8zgehu,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_2ns8erkd0rngct,AUTO_APPROVED,rule,ICIC160726996264222,order_nvgqcqnyiadpz9,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_f1xoyc6h52mj13,AUTO_APPROVED,rule,PUNB210726064860673,order_zix2soth4mvkqe,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_689mw68m1inufn,AUTO_APPROVED,rule,IDFB210726990069680,order_7zvnbi1cao8w81,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_p1shntcvl0yqzd,LLM_MATCHED,llm,HDFC300726537893186,order_scqqavaqdmfztg,₹0.00,"AI Adjudicator: Verified Bank credit ₹24,643.13 (UTR HDFC300726537893186) matches Merchant Ledger net receivable ₹24,643.13 (Order order_scqqavaqdmfztg) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_b8ohl1zumkvgg4,AUTO_APPROVED,rule,ICIC050826142436258,order_ofc57paco58p8o,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_tye737fentd7kf,AUTO_APPROVED,rule,SBIN310726687447017,order_enz9jn7k98xvi6,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ohpjf9899ffzad,AUTO_APPROVED,rule,YESB120726892225606,order_or8133hbaeom43,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_lg8y2wgebec41r,BATCH_SPLIT_APPROVED,batch,25825.15,order_hfrrcv1exyb8z8,₹0.00,Batch split: 2 settlements (total ₹25825.15) match single bank credit ₹25825.15 (delta ₹0.0).
+2026-08-27 13:21:07,setl_2e1baku4nc0iba,LLM_MATCHED,llm,SBIN110726137565896,order_e00hu3x5u7df89,₹115.40,"AI Adjudicator: Verified Bank credit ₹39,322.53 (UTR SBIN110726137565896) matches Merchant Ledger net receivable ₹39,322.53 (Order order_e00hu3x5u7df89) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_dz8xebnp5o3xt0,AUTO_APPROVED,rule,IDFB280726546199240,order_vm3i0gxhc660uj,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_c781hfl1zopqzf,AUTO_APPROVED,rule,SBIN290726066154980,order_rw6owh8vlig7r2,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ozfqpii49h5vn2,AUTO_APPROVED,rule,IDFB030826618518626,order_00zcmhfmtgdlb3,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_jl2fx35lg49ffq,AUTO_APPROVED,rule,BARB250726008248458,order_utvlyjmwuocs22,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ttimlytgvkymzl,AUTO_APPROVED,rule,YESB230726917105080,order_d3iia38k0hf36c,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_u536lzms804bfp,FUZZY_APPROVED,fuzzy,SBIN030826488397171,order_yettruti7zfzto,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_4tp1na6ksnjczo,AUTO_APPROVED,rule,IDFB270726535846405,order_wt994pn8qix43i,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_0r095uhgcrkfkj,AUTO_APPROVED,rule,UTIB130726118900346,order_w0mqa1ccyy4juf,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_25ju26sphncasl,LLM_MATCHED,llm,PUNB220726191907499,order_ieoxvku8yjmyvm,₹87.05,"AI Adjudicator: Verified Bank credit ₹11,428.13 (UTR PUNB220726191907499) matches Merchant Ledger net receivable ₹11,428.13 (Order order_ieoxvku8yjmyvm) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_yfeiq7ka8obm5r,AUTO_APPROVED,rule,AXIS220726536423570,order_faw2xch1joqnuv,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_jk31dzrhttqayi,FUZZY_APPROVED,fuzzy,PUNB240726318849680,order_9dssrkfi53llp0,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_2ympyi46n05fl0,FUZZY_APPROVED,fuzzy,SBIN030826610703360,order_2tyznm5saxyk2e,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_4z7ht7ryme6psr,AUTO_APPROVED,rule,KKBK020826886932055,order_15kck4zynfgj1y,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_xk13c3zqx3qfxm,BATCH_SPLIT_APPROVED,batch,25825.15,order_2pitt8bo7jfm03,₹0.00,Batch split: 2 settlements (total ₹25825.15) match single bank credit ₹25825.15 (delta ₹0.0).
+2026-08-27 13:21:07,setl_h1dxkxb4rvwjve,LLM_MATCHED,llm,SBIN040826218834581,order_rf4won6fawe3ia,₹305.58,"AI Adjudicator: Verified Bank credit ₹30,163.20 (UTR SBIN040826218834581) matches Merchant Ledger net receivable ₹30,163.20 (Order order_rf4won6fawe3ia) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_jd3x4yh5hoa7wk,AUTO_APPROVED,rule,SBIN170726316544137,order_kqdvnab87frboo,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_6viarph3q26te0,AUTO_APPROVED,rule,BARB060826419087886,order_nkys30u7frzud1,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_bx54qotvog5kks,LLM_MATCHED,llm,HDFC290726728895927,order_ymxu16bn45u0f4,₹0.00,"AI Adjudicator: Verified Bank credit ₹33,289.29 (UTR HDFC290726728895927) matches Merchant Ledger net receivable ₹33,289.29 (Order order_ymxu16bn45u0f4) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_05oszqg6pkisb8,AUTO_APPROVED,rule,YESB110726398391226,order_ebjvnfowapcq7v,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_5vcmgjvc2smtc0,AUTO_APPROVED,rule,KKBK160726965391607,order_4kv2ra0t51lc8a,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_5dwjate4vv9c0x,AUTO_APPROVED,rule,BARB080726452375979,order_eoizu7n9en0ker,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_h4fzzhyh9ojgue,LLM_MATCHED,llm,UTIB030826769924277,order_pnei5zrwuo8nq1,₹461.26,"AI Adjudicator: Verified Bank credit ₹10,230.58 (UTR UTIB030826769924277) matches Merchant Ledger net receivable ₹10,230.58 (Order order_pnei5zrwuo8nq1) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_neftz53c5dwumj,AUTO_APPROVED,rule,IDFB130726622398474,order_9zurutk92j6sb0,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ur4mfjhojalbh1,LLM_MATCHED,llm,PUNB170726095739405,order_obw3j6sog2lbwt,₹302.63,"AI Adjudicator: Verified Bank credit ₹16,340.97 (UTR PUNB170726095739405) matches Merchant Ledger net receivable ₹16,340.97 (Order order_obw3j6sog2lbwt) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_jsos58yofvyg72,LLM_MATCHED,llm,ICIC310726881298861,order_uzc2plhs95twbq,₹267.60,"AI Adjudicator: Verified Bank credit ₹26,268.83 (UTR ICIC310726881298861) matches Merchant Ledger net receivable ₹26,268.83 (Order order_uzc2plhs95twbq) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_u2aqhknqjge0ut,AUTO_APPROVED,rule,BARB160726161705022,order_nzf6yxis81hbud,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_kukpxpsbtnbdzr,FUZZY_APPROVED,fuzzy,BARB140726251143678,order_5ofttuk18c7j0z,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_c6odr9hounkp9j,AUTO_APPROVED,rule,YESB310726353896298,order_i1wr63juwmw3m4,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_6do9uzxca4x76b,AUTO_APPROVED,rule,UTIB040826168019903,order_1iv0b1hi8h7pr2,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_85j2s2da89otcj,AUTO_APPROVED,rule,SBIN230726820762381,order_mxon2kf9q0qoex,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_g23tyifjhs1jqe,BATCH_SPLIT_APPROVED,batch,30818.21,order_piqjpbofo7puk6,₹0.00,Batch split: 3 settlements (total ₹30818.21) match single bank credit ₹30818.21 (delta ₹0.0).
+2026-08-27 13:21:07,setl_wypn3whifyemf5,AUTO_APPROVED,rule,PUNB280726563711429,order_yzdcqr8zmmxx1c,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_pace2f346zssjn,AUTO_APPROVED,rule,AXIS140726679608289,order_hxtdqy89fiq0fc,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_a2mf3g1puxjcn0,AUTO_APPROVED,rule,PUNB120726546130873,order_vppfnniix1sknx,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ea3y0xaobk02lv,LLM_MATCHED,llm,AXIS160726271630335,order_qdji6sow4yif5d,₹451.84,"AI Adjudicator: Verified Bank credit ₹24,195.04 (UTR AXIS160726271630335) matches Merchant Ledger net receivable ₹24,195.04 (Order order_qdji6sow4yif5d) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_8mo2tpx4lpcx1a,AUTO_APPROVED,rule,BARB160726287875703,order_emrqp94na46n0a,₹0.64,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_5fqjyyiir41g20,AUTO_APPROVED,rule,YESB150726904265274,order_zq6rf8lw7y8aub,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ydbsiwfviuclhq,AUTO_APPROVED,rule,HDFC010826529877074,order_xi5n6dbxf9rexl,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_fy71knckonrhhk,AUTO_APPROVED,rule,IDFB020826614215248,order_riqye1sofpvoeo,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_t3f49hwfl8mpj4,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for PUNB180726147621236.
+2026-08-27 13:21:07,setl_pg0jg3ytiihn70,BATCH_SPLIT_APPROVED,batch,30818.21,order_b8innu7pggminu,₹0.00,Batch split: 3 settlements (total ₹30818.21) match single bank credit ₹30818.21 (delta ₹0.0).
+2026-08-27 13:21:07,setl_bhlf80hkkwjsv0,AUTO_APPROVED,rule,PUNB110726123357617,order_1oubnlma4ac1pu,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_nbrqit4j0sgq53,FUZZY_APPROVED,fuzzy,KKBK280726410238735,order_0znmvnswjfii0u,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_7damixw78meewb,BATCH_SPLIT_APPROVED,batch,30818.21,order_a6540wfj2etpse,₹0.00,Batch split: 3 settlements (total ₹30818.21) match single bank credit ₹30818.21 (delta ₹0.0).
+2026-08-27 13:21:07,setl_fswjz8dyzksy9f,BATCH_SPLIT_APPROVED,batch,30191.25,order_6sp0y3rora8k2h,₹0.00,Batch split: 2 settlements (total ₹30191.25) match single bank credit ₹30191.25 (delta ₹0.0).
+2026-08-27 13:21:07,setl_wl9pqrmou803jw,FUZZY_APPROVED,fuzzy,AXIS300726415359771,order_uyk2vfhd7wg11s,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_zsaz46abqz21pn,AUTO_APPROVED,rule,HDFC030826825263794,order_ceth28imdgajbq,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_woe58oagp01tsn,AUTO_APPROVED,rule,BARB120726335838439,order_2u8z1xie39zvye,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_hu3fiqg01pyd81,AUTO_APPROVED,rule,PUNB120726962206824,order_1uvjytmp4nvv78,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_8fitozabdjqvio,AUTO_APPROVED,rule,ICIC240726970150196,order_wxzb5oeqxadgyu,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_y6rr79iv2f1fk0,BATCH_SPLIT_APPROVED,batch,30191.25,order_1gglcr5p8aacj7,₹0.00,Batch split: 2 settlements (total ₹30191.25) match single bank credit ₹30191.25 (delta ₹0.0).
+2026-08-27 13:21:07,setl_040vrssdvb26xn,AUTO_APPROVED,rule,PUNB210726785185690,order_ie5apcbflun3yp,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_i8bnq49dmxs03d,AUTO_APPROVED,rule,PUNB010826051666081,order_lwwiayzd9uxlj1,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_olodlonkcp8ov5,AUTO_APPROVED,rule,KKBK240726817036100,order_a7idi09kgw8c4a,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ayuf1tk83w1y6z,AUTO_APPROVED,rule,SBIN230726331044817,order_ne4xlwg9ay22d1,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_f8w9usi652bqzs,AUTO_APPROVED,rule,UTIB150726548522072,order_jqycrho7azp8ox,₹0.02,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_4l6g9h8lyk0vgl,LLM_MATCHED,llm,YESB220726779911379,order_d613ly4qztgbcq,₹0.00,"AI Adjudicator: Verified Bank credit ₹34,808.59 (UTR YESB220726779911379) matches Merchant Ledger net receivable ₹34,808.59 (Order order_d613ly4qztgbcq) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_lfiyz3kqjyg8ir,AUTO_APPROVED,rule,BARB020826509355557,order_5y4lawrtnfgzsk,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_w79gqqqjr6jp3z,AUTO_APPROVED,rule,IDFB230726706129889,order_cgfx30ac9pubko,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_jwsh3mokbmjluu,LLM_MATCHED,llm,YESB160726352791111,order_q2wipp101yqt06,₹353.45,"AI Adjudicator: Verified Bank credit ₹18,976.31 (UTR YESB160726352791111) matches Merchant Ledger net receivable ₹18,976.31 (Order order_q2wipp101yqt06) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_ssnml4c7f4ygf7,AUTO_APPROVED,rule,BARB210726059469984,order_36z6coxkq5p52d,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_3hk3lqexrsq97n,AUTO_APPROVED,rule,BARB220726457595995,order_bowvhd7b4isyi8,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_uw52rb3bihf19j,LLM_MATCHED,llm,HDFC210726714876507,order_g3duvschl80zd8,₹240.55,"AI Adjudicator: Verified Bank credit ₹34,895.92 (UTR HDFC210726714876507) matches Merchant Ledger net receivable ₹34,895.92 (Order order_g3duvschl80zd8) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_iq93h5ywl94mop,AUTO_APPROVED,rule,ICIC040826196227238,order_z6ctel745csf0a,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_rzrky8raquefim,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for PUNB010826082267990.
+2026-08-27 13:21:07,setl_1ye8una9wk4mk3,LLM_MATCHED,llm,PUNB230726379264053,order_fh7b0ahi1ywt3h,₹0.00,"AI Adjudicator: Verified Bank credit ₹6,455.92 (UTR PUNB230726379264053) matches Merchant Ledger net receivable ₹6,455.92 (Order order_fh7b0ahi1ywt3h) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_16ze7blp7dgt60,AUTO_APPROVED,rule,KKBK220726345096859,order_22wahdo61xn8dk,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_zx79v37prddtbx,AUTO_APPROVED,rule,SBIN290726399330255,order_km8b543bb9h5c7,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_nol8wkff0zadf5,AUTO_APPROVED,rule,AXIS050826141408783,order_zffghf3obs0swv,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_vjb5aqy9055s2u,FUZZY_APPROVED,fuzzy,IDFB310726507036665,order_3zw0sd7sbz75eu,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_obgggkycsnu966,AUTO_APPROVED,rule,YESB110726579327701,order_d5so2n333za49x,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_y1yogq04qpqrw6,AUTO_APPROVED,rule,SBIN070826923613912,order_prtyveksvquqs9,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_qpts0mmbbsu04w,AUTO_APPROVED,rule,PUNB310726761504884,order_p3v5vs0jzwlsd4,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_cthk8qd11pi552,FUZZY_APPROVED,fuzzy,PUNB171726124266474,order_9bn1hcd4gfkbzy,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_vmeagwp82h6sgl,AUTO_APPROVED,rule,YESB230726130610922,order_zh4yybkhtab92w,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_krszjknz2k9mf0,AUTO_APPROVED,rule,HDFC220726765094620,order_x4ntqvnmd8iyub,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_aixy3p4xblrx02,AUTO_APPROVED,rule,AXIS170726124345353,order_ni4gybvjtrregf,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_youge4of633bq6,FUZZY_APPROVED,fuzzy,KKBK300736698886659,order_z5tpwy0tuzg2vg,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_blckuhyd07dvrm,AUTO_APPROVED,rule,UTIB150726590504173,order_uxv2o2qszo1i73,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_lxzb63v1vqylbo,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for IDFB050826020715378.
+2026-08-27 13:21:07,setl_ywzl0ozt4lh19l,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for SBIN240726950814994.
+2026-08-27 13:21:07,setl_26r2gwlj6iw5g2,AUTO_APPROVED,rule,UTIB270726921510026,order_1jb0oxdfns88m7,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_rcfu5d0mysf699,FUZZY_APPROVED,fuzzy,IDFB160726040793751,order_p6u5ps4768tqw8,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_pllgrcutreurfm,LLM_MATCHED,llm,HDFC130726618506929,order_lt4u6o3lpo7381,₹0.00,"AI Adjudicator: Verified Bank credit ₹32,668.14 (UTR HDFC130726618506929) matches Merchant Ledger net receivable ₹32,668.14 (Order order_lt4u6o3lpo7381) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_v7u2aja7hawqdu,AUTO_APPROVED,rule,AXIS300726277376554,order_nlydjixl7vsky6,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_af8edjm7w4hxio,AUTO_APPROVED,rule,SBIN170726643029708,order_913sd09oym3mul,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_a4ixqwouyaadu9,AUTO_APPROVED,rule,YESB200726324483438,order_nd1gafunh7i3wy,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_d62jc0vlky7txe,AUTO_APPROVED,rule,KKBK110726567677619,order_a64tcwbbkocyw3,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_k80ty97l09w7wa,AUTO_APPROVED,rule,HDFC110726696374912,order_nx3m4clen7ct4r,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_rlgfr16wu19lf2,AUTO_APPROVED,rule,BARB290726990203854,order_18l30pyn1qi5j3,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_8n0wczvl3xkkjl,AUTO_APPROVED,rule,KKBK080726152428678,order_igkplrggbi28sh,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_0lyimoes1ai9a4,AUTO_APPROVED,rule,UTIB240726218531112,order_gomqxmqo0fvlc2,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_o0a89jptt0ix1s,AUTO_APPROVED,rule,SBIN090726531292662,order_phfaxi1s9npaxu,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ubes81de0rii5c,AUTO_APPROVED,rule,UTIB310726705068098,order_xgl1qgouo8zd0l,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_98snlc1tlw78f6,AUTO_APPROVED,rule,HDFC280726848610660,order_8f1ih6lb3k5ruw,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ck5qdadapvsf4e,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for KKBK080726393516026.
+2026-08-27 13:21:07,setl_qhj9zu0f5e47rh,LLM_MATCHED,llm,IDFB160726587837105,order_jz4jka0j2nbi5e,₹114.07,"AI Adjudicator: Verified Bank credit ₹18,032.80 (UTR IDFB160726587837105) matches Merchant Ledger net receivable ₹18,032.80 (Order order_jz4jka0j2nbi5e) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_3mxywrye7pdjnl,AUTO_APPROVED,rule,YESB010826322247081,order_7lofolangxcd28,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_f874esdqc9pun6,FUZZY_APPROVED,fuzzy,BARB290726447354414,order_awnwgxv38pfitc,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_xryx5zvomxw3hb,AUTO_APPROVED,rule,ICIC220726972512343,order_djsoocgdrvd511,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_fhn5ylra9pay1t,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for AXIS270726352878971.
+2026-08-27 13:21:07,setl_9gi7611mh5hzwr,AUTO_APPROVED,rule,UTIB260726282196087,order_lr5t9egvxbcvlm,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_nse13dww8dxajx,LLM_MATCHED,llm,KKBK090726584089227,order_y2twscw63tfms1,₹35.97,"AI Adjudicator: Verified Bank credit ₹15,808.31 (UTR KKBK090726584089227) matches Merchant Ledger net receivable ₹15,808.31 (Order order_y2twscw63tfms1) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_fraotwsj57zpqf,AUTO_APPROVED,rule,SBIN090726937813267,order_lj1j2pemklmdh3,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_heqy8lbkyyt86r,LLM_MATCHED,llm,ICIC150726886459478,order_v8ab40oobagxkk,₹49.75,"AI Adjudicator: Verified Bank credit ₹38,779.31 (UTR ICIC150726886459478) matches Merchant Ledger net receivable ₹38,779.31 (Order order_v8ab40oobagxkk) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_qnh5eyqt4xs3df,BATCH_SPLIT_APPROVED,batch,81880.25,order_8pcyhc065ju7yo,₹0.00,Batch split: 2 settlements (total ₹81880.25) match single bank credit ₹81880.25 (delta ₹0.0).
+2026-08-27 13:21:07,setl_8jg2rzghxirj6d,AUTO_APPROVED,rule,BARB080726420793741,order_o2de83quv5f3fi,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_rwho3u56k7sbfd,AUTO_APPROVED,rule,KKBK220726246847325,order_o6c6zh6du9zz99,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_5jo52f0u4suxri,AUTO_APPROVED,rule,KKBK210726973780534,order_5425wj0y17vz2q,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_k6bcdfqvdpmm9x,AUTO_APPROVED,rule,AXIS030826905966694,order_rbsh103uf8ri3p,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_j719vp4js6nlm4,FUZZY_APPROVED,fuzzy,KKBK200726069486185,order_mz43d3zb28mcli,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_fljbt8awap2qh8,LLM_MATCHED,llm,ICIC060826834100066,order_inmm5depnczfu5,₹178.24,"AI Adjudicator: Verified Bank credit ₹28,339.30 (UTR ICIC060826834100066) matches Merchant Ledger net receivable ₹28,339.30 (Order order_inmm5depnczfu5) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_xrjal1tpnsq3xn,AUTO_APPROVED,rule,IDFB180726896636805,order_96nix9twu52iyb,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_uys9w24xvofxjx,AUTO_APPROVED,rule,UTIB260726610356574,order_slpwlm4fm2oggv,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_n8x9ihjc5ysa4h,AUTO_APPROVED,rule,YESB260726943578459,order_wfucweeemmv8b7,₹0.03,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ldtmxebgxpeamd,AUTO_APPROVED,rule,UTIB210726196676015,order_32vuxly81xgjhk,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_c9f2tbw4pyx3s6,FUZZY_APPROVED,fuzzy,ICIC040836666117729,order_53cd0znuajpbpk,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.
+2026-08-27 13:21:07,setl_195o3q041r1jke,LLM_MATCHED,llm,SBIN120726208346442,order_357p714tzp0d99,₹304.34,"AI Adjudicator: Verified Bank credit ₹27,200.53 (UTR SBIN120726208346442) matches Merchant Ledger net receivable ₹27,200.53 (Order order_357p714tzp0d99) after accounting for MDR/refund deductions."
+2026-08-27 13:21:07,setl_a06y5miha8zplc,AUTO_APPROVED,rule,ICIC200726730515133,order_tahqbbu55dva51,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_186t2pxm8ec4nn,AUTO_APPROVED,rule,KKBK200726785625084,order_xcjdp9t6m7rjbn,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_nps862jcyb8eko,AUTO_APPROVED,rule,ICIC210726734608736,order_3lm75q7gx2slgo,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_56gw9bejam4rce,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for YESB270726988161037.
+2026-08-27 13:21:07,setl_3bvmy7twy6h7tn,AUTO_APPROVED,rule,KKBK260726136674886,order_59pcyd2kirrnrn,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_ywnfj9n6npc32h,AUTO_APPROVED,rule,UTIB310726726440198,order_il7w6atjlono3y,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_twyeg11rgyx0ww,BATCH_SPLIT_APPROVED,batch,81880.25,order_bm96bo6659haoj,₹0.00,Batch split: 2 settlements (total ₹81880.25) match single bank credit ₹81880.25 (delta ₹0.0).
+2026-08-27 13:21:07,setl_lpnuuzz3h3nn6b,AUTO_APPROVED,rule,IDFB290726014095071,order_96em7r3qcqaoox,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_6adqc59z6nsm3v,AUTO_APPROVED,rule,IDFB290726447940803,order_x53lrzmo3dxudx,₹0.00,All checks passed within tolerance.
+2026-08-27 13:21:07,setl_h4jgw9krbe6eyo,MISSING_COUNTERPART,none,—,—,—,No exact or fuzzy UTR match found for KKBK170726609577248.
+2026-08-27 13:21:07,setl_gi0juggns8gm4c,FUZZY_APPROVED,fuzzy,IDFB130826435149286,order_l4kfw21kmn17pl,₹0.00,UTR fuzzy-matched at high similarity; amount/date within tolerance.

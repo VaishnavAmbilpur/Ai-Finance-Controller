@@ -108,8 +108,8 @@ st.subheader("Executive Performance & Financial ROI Summary")
 c1, c2, c3, c4 = st.columns(4)
 c1.metric("Overall Reconciliation Accuracy", f"{final_accuracy}%", delta=f"+{automation_diff}% AI boost")
 c2.metric("Manual Audit Time Saved", f"{time_saved_hours} Hours", delta=f"{ai_resolved} discrepancies automated")
-c3.metric("Operational Cost Saved per Run", f"₹{cost_saved_run:,.2f}", help="Based on ₹500/hr finance analyst rate")
-c4.metric("Projected Annualized ROI", f"₹{annualized_savings:,.0f} / year", help="Projected savings assuming daily runs")
+c3.metric("Operational Cost Saved per Run", f"₹{cost_saved_run:,.2f}", help="Based on average ₹500/hr Indian Finance Analyst rate")
+c4.metric("Projected Annualized ROI", f"₹{annualized_savings:,.0f} / year", help="Projected savings assuming daily runs in India")
 
 st.divider()
 

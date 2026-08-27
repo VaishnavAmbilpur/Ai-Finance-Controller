@@ -95,9 +95,9 @@ final_exceptions = len(df[df["decision"].isin(["LLM_ESCALATED", "MISSING_COUNTER
 automation_diff = round(final_accuracy - rule_accuracy, 1)
 
 # FINANCIAL ROI & TIME SAVED CALCULATOR
-# Standard industry metric: 15 mins manual audit per complex fee/MDR exception @ $30/hr
+# Standard industry metric: 15 mins manual audit per complex fee/MDR exception @ ₹500/hr
 time_saved_hours = round(ai_resolved * 15 / 60, 1)
-cost_saved_run = round(time_saved_hours * 30.0, 2)
+cost_saved_run = round(time_saved_hours * 500.0, 2)
 annualized_savings = round(cost_saved_run * 365, 0)
 workload_reduction = round((ai_resolved / (ai_discrepancies + final_exceptions) * 100), 1) if (ai_discrepancies + final_exceptions) > 0 else 100.0
 
@@ -108,8 +108,8 @@ st.subheader("Executive Performance & Financial ROI Summary")
 c1, c2, c3, c4 = st.columns(4)
 c1.metric("Overall Reconciliation Accuracy", f"{final_accuracy}%", delta=f"+{automation_diff}% AI boost")
 c2.metric("Manual Audit Time Saved", f"{time_saved_hours} Hours", delta=f"{ai_resolved} discrepancies automated")
-c3.metric("Operational Cost Saved per Run", f"${cost_saved_run:,.2f}", help="Based on $30/hr finance analyst rate")
-c4.metric("Projected Annualized ROI", f"${annualized_savings:,.0f} / year", help="Projected savings assuming daily runs")
+c3.metric("Operational Cost Saved per Run", f"₹{cost_saved_run:,.2f}", help="Based on ₹500/hr finance analyst rate")
+c4.metric("Projected Annualized ROI", f"₹{annualized_savings:,.0f} / year", help="Projected savings assuming daily runs")
 
 st.divider()
 
@@ -260,8 +260,8 @@ Net AI Automation Improvement: +{automation_diff}%
 
 FINANCIAL ROI & TIME SAVINGS:
 - Manual Audit Time Saved: {time_saved_hours} Hours
-- Operational Cost Saved per Run: ${cost_saved_run:,.2f}
-- Projected Annualized Savings: ${annualized_savings:,.0f} / year
+- Operational Cost Saved per Run: ₹{cost_saved_run:,.2f}
+- Projected Annualized Savings: ₹{annualized_savings:,.0f} / year
 - Workload Reduction: {workload_reduction}%
 
 DECISION BREAKDOWN:

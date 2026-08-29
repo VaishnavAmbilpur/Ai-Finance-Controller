@@ -44,7 +44,7 @@ def _apply_llm_result(rule_result, llm_result: AdjudicationResult):
         )
 
 
-async def run_pipeline_async(settlement_path: str, bank_path: str, ledger_path: str) -> dict:
+async def run_pipeline_async(settlement_path: str, bank_path: str, ledger_path: str, audit_log_path: str = "data/audit_log.csv") -> dict:
     """
     Async pipeline — runs all LLM calls concurrently via asyncio.gather.
 
@@ -127,19 +127,21 @@ async def run_pipeline_async(settlement_path: str, bank_path: str, ledger_path: 
     llm_calls = len(pending_llm)
     metrics = compute_metrics(results, elapsed, llm_calls, len(results))
 
-    os.makedirs("data", exist_ok=True)
-    logger.save("data/audit_log.csv")
+    out_dir = os.path.dirname(audit_log_path)
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
+    logger.save(audit_log_path)
 
     print_metrics(metrics)
     return metrics
 
 
-def run_pipeline(settlement_path: str, bank_path: str, ledger_path: str) -> dict:
+def run_pipeline(settlement_path: str, bank_path: str, ledger_path: str, audit_log_path: str = "data/audit_log.csv") -> dict:
     """
     Synchronous entry point — wraps the async pipeline with asyncio.run().
     External callers (CLI, tests, Streamlit) use this exactly as before.
     """
-    return asyncio.run(run_pipeline_async(settlement_path, bank_path, ledger_path))
+    return asyncio.run(run_pipeline_async(settlement_path, bank_path, ledger_path, audit_log_path=audit_log_path))
 
 
 if __name__ == "__main__":

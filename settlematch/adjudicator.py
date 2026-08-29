@@ -71,7 +71,7 @@ Return ONLY valid JSON in this exact schema:
 Do not include any text before or after the JSON."""
 
 MAX_RETRIES = 1          # retry once on API error before escalating
-RETRY_DELAY_SECONDS = 2.0  # wait 2 seconds between retries
+RETRY_DELAY_SECONDS = 0.2  # wait 0.2 seconds between retries
 
 # Lazy-init singletons — avoids crash when importing without API key
 _client: OpenAI | None = None
@@ -101,7 +101,7 @@ def get_client() -> OpenAI:
         _client = OpenAI(
             base_url=_get_base_url(),
             api_key=_get_api_key(),
-            timeout=10.0,
+            timeout=3.0,
         )
     return _client
 
@@ -113,7 +113,7 @@ def get_async_client() -> AsyncOpenAI:
         _async_client = AsyncOpenAI(
             base_url=_get_base_url(),
             api_key=_get_api_key(),
-            timeout=10.0,
+            timeout=3.0,
         )
     return _async_client
 
@@ -373,7 +373,7 @@ async def adjudicate_async(settlement_row, candidates: dict) -> AdjudicationResu
     Uses asyncio.sleep (non-blocking) instead of time.sleep on retry.
 
     Error handling (same as sync version — never crashes):
-      - API error → retry once with asyncio.sleep, then ESCALATE
+      - API error → retry once with asyncio.sleep, then ESCALATE/Fallback
       - Bad JSON → ESCALATE
       - Invalid Pydantic → ESCALATE
     """
@@ -386,6 +386,10 @@ async def adjudicate_async(settlement_row, candidates: dict) -> AdjudicationResu
             break
         except Exception as e:
             last_error = str(e)
+            err_msg = last_error.lower()
+            # Fast break on rate limit, quota, auth, or connection errors to fallback immediately
+            if any(term in err_msg for term in ["429", "rate limit", "quota", "401", "unauthorized", "invalid_api_key"]):
+                break
             if attempt < MAX_RETRIES:
                 await asyncio.sleep(RETRY_DELAY_SECONDS)  # FIX #3: non-blocking retry wait
     return _parse_llm_response(raw, last_error, settlement_row=settlement_row, candidates=candidates)

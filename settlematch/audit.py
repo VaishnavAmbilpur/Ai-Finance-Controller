@@ -98,13 +98,16 @@ class AuditLogger:
         """
         # Back up existing audit log before overwriting
         if os.path.exists(path):
-            ts = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-            backup_path = path.replace(".csv", f"_{ts}.csv")
-            counter = 1
-            while os.path.exists(backup_path):
-                backup_path = path.replace(".csv", f"_{ts}_{counter}.csv")
-                counter += 1
-            os.rename(path, backup_path)
+            try:
+                ts = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+                backup_path = path.replace(".csv", f"_{ts}.csv")
+                counter = 1
+                while os.path.exists(backup_path):
+                    backup_path = path.replace(".csv", f"_{ts}_{counter}.csv")
+                    counter += 1
+                os.rename(path, backup_path)
+            except PermissionError:
+                pass
 
         fieldnames = [
             "timestamp",

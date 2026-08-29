@@ -2,9 +2,7 @@
 # Non-technical, executive-ready interface for 3-way payment reconciliation.
 # Includes ROI Calculator, Reconciliation Funnel, Live Search, Transaction Inspector, and Executive Report Export.
 
-import json
 import os
-from datetime import datetime
 import pandas as pd
 import streamlit as st
 
@@ -15,39 +13,12 @@ from settlematch.generator import generate_dataset
 st.set_page_config(page_title="SettleMatch - Payment Reconciliation Controller", layout="wide")
 
 AUDIT_PATH = "data/audit_log.csv"
-META_PATH = "data/dataset_meta.json"
 REQUIRED_DATA_FILES = [
     "data/audit_log.csv",
     "data/settlement_report.csv",
     "data/bank_statement.csv",
     "data/merchant_ledger.csv",
 ]
-
-
-def _save_meta(seed=None, count=100):
-    meta = {
-        "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S IST"),
-        "records": count,
-        "seed": seed,
-        "status": "Pre-Generated & Reconciled",
-    }
-    os.makedirs("data", exist_ok=True)
-    with open(META_PATH, "w") as f:
-        json.dump(meta, f, indent=2)
-
-
-def _get_meta():
-    if os.path.exists(META_PATH):
-        try:
-            with open(META_PATH, "r") as f:
-                return json.load(f)
-        except Exception:
-            pass
-    if os.path.exists(AUDIT_PATH):
-        mtime = os.path.getmtime(AUDIT_PATH)
-        dt_str = datetime.fromtimestamp(mtime).strftime("%Y-%m-%d %H:%M:%S IST")
-        return {"generated_at": dt_str, "records": 100, "status": "Pre-Generated & Reconciled"}
-    return {"generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S IST"), "records": 100, "status": "Pre-Generated & Reconciled"}
 
 
 def _generate_and_run(seed=None):
@@ -57,28 +28,20 @@ def _generate_and_run(seed=None):
     bank.to_csv("data/bank_statement.csv", index=False)
     ledger.to_csv("data/merchant_ledger.csv", index=False)
     run_pipeline("data/settlement_report.csv", "data/bank_statement.csv", "data/merchant_ledger.csv")
-    _save_meta(seed=seed, count=len(settlements))
 
 
-# Auto-initialize dataset on launch if missing any data files
+# Auto-initialize dataset silently on launch if missing any data files
 if not all(os.path.exists(f) for f in REQUIRED_DATA_FILES):
     _generate_and_run(seed=42)
-
-meta_info = _get_meta()
 
 # HEADER: Title + Control Button
 header_col, btn_col = st.columns([3, 1], vertical_alignment="center")
 with header_col:
     st.title("SettleMatch - Payment Reconciliation Controller")
     st.caption("Automated 3-Way Reconciliation between Settlement Reports, Bank Statements, and Merchant Ledgers")
-    st.markdown(
-        f"🟢 **Dataset Status:** `{meta_info.get('status', 'Pre-Generated')}` | "
-        f"📅 **Generated On:** `{meta_info.get('generated_at', 'Pre-loaded')}` | "
-        f"📊 **Records Pre-Loaded:** `{meta_info.get('records', 100)}`"
-    )
 with btn_col:
     if st.button("Generate New Data & Run Pipeline", type="primary", use_container_width=True):
-        with st.spinner("Processing fast reconciliation pipeline..."):
+        with st.spinner("Processing reconciliation pipeline..."):
             _generate_and_run(seed=None)
             st.rerun()
 

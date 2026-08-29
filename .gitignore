@@ -10,6 +10,7 @@ venv/
 
 # Generated data artifacts
 # data/ (uncomment if you want to ignore data, tracked here for instant Streamlit demo boot)
+data/audit_log_*.csv
 
 # OS / editor
 .DS_Store

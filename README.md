@@ -1,6 +1,6 @@
 # SettleMatch
 
-**93.0% match rate · 36.6 records/sec · Dynamic 3-source synthetic generator (300 records) · 70 passing unit & integration tests**
+**93.0% match rate · 34.7 records/sec · Dynamic 3-source synthetic generator (100 records) · 70 passing unit & integration tests**
 
 An AI agent that reconciles Razorpay settlement reports, bank statements, and merchant ledgers.
 Auto-resolves clean cases with rules, handles batched settlements & fuzzy UTR typos, escalates ambiguous cases concurrently to an LLM via OpenRouter, and honestly reports everything it couldn't resolve. Every decision is explained and fully auditable.
@@ -53,21 +53,21 @@ flowchart TD
 
 | Metric | Value | What it signals |
 |---|---|---|
-| Match rate | 93.0% | Primary accuracy — auto-approved + fuzzy-matched + batch split + AI resolved / total (279/300) |
-| Throughput | 36.6 records/sec | System efficiency — concurrent async LLM calls timed with `time.perf_counter()` |
-| LLM call rate | 13.3% | Rule-engine quality — ~87% resolved without API tokens |
-| Exceptions | 21 records | Honest exception list — categorized into 6 named failure buckets |
+| Match rate | 93.0% | Primary accuracy — auto-approved + fuzzy-matched + batch split + AI resolved / total (93/100) |
+| Throughput | 34.7 records/sec | System efficiency — concurrent async LLM calls timed with `time.perf_counter()` |
+| LLM call rate | 13.0% | Rule-engine quality — ~87% resolved without API tokens |
+| Exceptions | 7 records | Honest exception list — categorized into 6 named failure buckets |
 
 ## Exception Breakdown
 
 | Category | Count | Meaning |
 |---|---|---|
-| MISSING_COUNTERPART | 13 | Settlement record missing counterpart in bank statement |
-| UTR_MISMATCH | 8 | UTR digit typos beyond 93% fuzzy similarity threshold |
+| MISSING_COUNTERPART | 6 | Settlement record missing counterpart in bank statement |
+| LLM_ESCALATED | 1 | Fallback/unresolved API exceptions |
+| UTR_MISMATCH | 0 | UTR digit typos beyond 93% fuzzy similarity threshold |
 | AMOUNT_DELTA | 0 | Unrecorded fee variances — 100% verified & resolved by AI Adjudicator |
 | DATE_LAG | 0 | Settlement credit delays — 100% verified & resolved by AI Adjudicator |
 | BATCH_SPLIT | 0 | Multi-order deposits — 100% matched by batch split engine |
-| LLM_ESCALATED | 0 | Fallback/unresolved API exceptions |
 
 ## Financial Fee Formulas & Calculation Transparency
 

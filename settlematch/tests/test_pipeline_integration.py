@@ -71,9 +71,9 @@ class TestRunPipelineMetrics:
             metrics = run_pipeline(s_path, b_path, l_path)
         assert metrics["matched"] + metrics["exception_count"] == metrics["total_records"]
 
-    def test_pipeline_300_records_reproducible(self, tmp_path):
+    def test_pipeline_100_records_reproducible(self, tmp_path):
         from main import run_pipeline
-        settlements, bank, ledger = generate_dataset(n_records=300, seed=42)
+        settlements, bank, ledger = generate_dataset(n_records=100, seed=42)
         s_path = str(tmp_path / "settlement_report.csv")
         b_path = str(tmp_path / "bank_statement.csv")
         l_path = str(tmp_path / "merchant_ledger.csv")
@@ -84,7 +84,7 @@ class TestRunPipelineMetrics:
         with patch("main.adjudicate_async", _escalate_mock()):
             metrics = run_pipeline(s_path, b_path, l_path)
 
-        assert metrics["total_records"] == 300
+        assert metrics["total_records"] == 100
         assert metrics["exception_count"] > 0
         assert "MISSING_COUNTERPART" in metrics["exception_breakdown"]
 

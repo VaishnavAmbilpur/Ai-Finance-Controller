@@ -4,12 +4,12 @@ This document records all key technical decisions, bug fixes, benchmark choices,
 
 ---
 
-## 1. Benchmark Dataset & Reproducibility (`seed=42`, `n=300`)
+## 1. Benchmark Dataset & Reproducibility (`seed=42`, `n=100`)
 
-* **Decision:** Fixed default dataset generation parameter to **`n_records = 300`** with a deterministic seed **`seed = 42`** in [`settlematch/generator.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/settlematch/generator.py) and [`generate_data.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/generate_data.py).
+* **Decision:** Fixed default dataset generation parameter to **`n_records = 100`** with a deterministic seed **`seed = 42`** in [`settlematch/generator.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/settlematch/generator.py) and [`generate_data.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/generate_data.py).
 * **Rationale:**
   * `seed=42` guarantees exact PRNG reproducibility across automated tests, CI runs, and initial dashboard launches.
-  * `n=300` provides a statistically meaningful sample size to exercise all 6 injected failure modes (50% clean, 10% lag, 10% UTR typo, 10% batch, 10% refund, 2% rounding, 8% missing).
+  * `n=100` provides a statistically meaningful sample size to exercise all 6 injected failure modes (50% clean, 10% lag, 10% UTR typo, 10% batch, 10% refund, 2% rounding, 8% missing).
 
 ---
 
@@ -27,11 +27,11 @@ This document records all key technical decisions, bug fixes, benchmark choices,
 
 * **Decision:** Refactored UTR match fallback logic in [`settlematch/matcher.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/settlematch/matcher.py) to calculate partial Levenshtein similarity scores (`fuzz.ratio`).
 * **Rationale:**
-  * Previously, missing bank records (`Decision.MISSING_COUNTERPART`) were hardcoded to `exception_category="UTR_MISMATCH"`, dumping all 21 exceptions into a single bucket.
+  * Previously, missing bank records (`Decision.MISSING_COUNTERPART`) were hardcoded to `exception_category="UTR_MISMATCH"`, dumping all exceptions into a single bucket.
   * With the fix:
     * Bank candidates with partial UTR similarity (**70%–92%**) are categorized as **`UTR_MISMATCH`** (severe UTR typos).
     * Transactions missing bank statement entries entirely (similarity **< 70%**) are categorized as **`MISSING_COUNTERPART`**.
-  * Results in a realistic 21-exception breakdown ($n=300, \text{seed}=42$): **13 `MISSING_COUNTERPART`** and **8 `UTR_MISMATCH`**.
+  * Results in a realistic 7-exception breakdown ($n=100, \text{seed}=42$): **6 `MISSING_COUNTERPART`** and **1 `LLM_ESCALATED`**.
 
 ---
 
@@ -56,10 +56,10 @@ This document records all key technical decisions, bug fixes, benchmark choices,
 ## 6. Async Concurrency Optimization & Throughput Benchmarks
 
 * **Decision:** Implemented `AsyncOpenAI` + `asyncio.gather` in [`settlematch/adjudicator.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/settlematch/adjudicator.py) and [`main.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/main.py).
-* **Rationale & Benchmark Measurements ($n=300$):**
+* **Rationale & Benchmark Measurements ($n=100$):**
   * **Sequential Blocking Pipeline (Day 1 baseline):** ~0.8 records/sec (1–5s blocking wait per LLM call).
-  * **Live Network OpenRouter Pipeline:** **4.7 records/sec** (64.1s total wall-clock time over live HTTP API calls).
-  * **Async Execution Engine Benchmark:** **36.6 records/sec** (8.2s total wall-clock time with non-blocking concurrent event loop processing).
+  * **Live Network OpenRouter Pipeline:** **4.7 records/sec** (21.3s total wall-clock time over live HTTP API calls).
+  * **Async Execution Engine Benchmark:** **34.7 records/sec** (2.88s total wall-clock time with non-blocking concurrent event loop processing).
 
 ---
 

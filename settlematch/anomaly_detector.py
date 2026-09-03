@@ -30,9 +30,19 @@ def detect_anomalies(df: pd.DataFrame) -> dict:
 
     duplicate_utrs = []
     if "bank_utr" in df.columns:
-        # Check duplicate UTRs ignoring N/A or empty
-        valid_utrs = df[df["bank_utr"].astype(str).str.upper() != "N/A"]["bank_utr"]
-        dup_counts = valid_utrs.value_counts()
+        def is_valid_utr_code(utr_val):
+            s = str(utr_val).strip().upper()
+            if not s or s in ["N/A", "NAN", "NONE", "—", "-"]:
+                return False
+            try:
+                float(s)
+                return False  # Skip numerical batch sums
+            except ValueError:
+                pass
+            return len(s) >= 6
+
+        utr_series = df["bank_utr"].apply(lambda x: str(x).strip() if is_valid_utr_code(x) else None).dropna()
+        dup_counts = utr_series.value_counts()
         dups = dup_counts[dup_counts > 1]
         for utr_val, cnt in dups.items():
             duplicate_utrs.append({

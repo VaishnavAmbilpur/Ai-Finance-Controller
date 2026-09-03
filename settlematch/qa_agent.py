@@ -155,14 +155,17 @@ async def answer_question(question: str, audit_log_path: str = "data/audit_log.c
             "matched_rows": pd.DataFrame(),
         }
 
-    matched_rows, context_str = filter_audit_dataframe(question, df)
+    # Clean leading/trailing quotes or extra whitespace from question
+    question_clean = question.strip('"' + "'" + ' ')
+
+    matched_rows, context_str = filter_audit_dataframe(question_clean, df)
     records_used = len(matched_rows)
 
-    prompt = f"User Question: {question}\n\nAudit Context Data:\n{context_str}"
+    prompt = f"User Question: {question_clean}\n\nAudit Context Data:\n{context_str}"
 
-    # Try LLM answer generation with fallback if API fails
+    answer = ""
+    # Try LLM answer generation
     try:
-        # Check API key before calling
         _get_api_key()
         client = get_async_client()
         response = await client.chat.completions.create(
@@ -173,19 +176,34 @@ async def answer_question(question: str, audit_log_path: str = "data/audit_log.c
                 {"role": "user", "content": prompt},
             ],
         )
-        answer = response.choices[0].message.content or "No response received from LLM."
-    except Exception as e:
-        # Fallback response grounded in pandas pre-filtering
-        q_lower = question.lower()
-        if "how many" in q_lower or "count" in q_lower:
-            answer = f"Based on audit log analysis, there are {records_used} matching record(s) for your query."
-        elif "list" in q_lower or "show" in q_lower:
-            ids = matched_rows["settlement_id"].tolist()[:5] if "settlement_id" in matched_rows.columns else []
-            answer = f"Found {records_used} matching record(s). Sample Settlement IDs: {', '.join(ids)}"
+        if response.choices and response.choices[0].message:
+            answer = (response.choices[0].message.content or "").strip()
+    except Exception:
+        answer = ""
+
+    # If LLM returned empty response or failed, construct a rich grounded answer from pandas
+    if not answer or answer == "No response received from LLM.":
+        q_lower = question_clean.lower()
+        if records_used == 0:
+            answer = "No matching audit log records found for your query."
         else:
-            answer = f"Analysis of {records_used} matching audit record(s): " + (
-                matched_rows["reason"].iloc[0] if not matched_rows.empty and "reason" in matched_rows.columns else "Query processed successfully."
-            )
+            sample_ids = matched_rows["settlement_id"].dropna().unique().tolist()[:5] if "settlement_id" in matched_rows.columns else []
+            id_str = ", ".join(f"`{s}`" for s in sample_ids) if sample_ids else "N/A"
+            reasons = matched_rows["reason"].dropna().unique().tolist()[:2] if "reason" in matched_rows.columns else []
+            reason_str = " | ".join(reasons) if reasons else "No specific reason logged."
+
+            if "how many" in q_lower or "count" in q_lower:
+                answer = f"Found {records_used} matching audit record(s) for your query."
+            elif "list" in q_lower or "show" in q_lower:
+                answer = f"Found {records_used} record(s) matching your query. Sample Settlement IDs: {id_str}. Primary audit reason: {reason_str}"
+            elif any(w in q_lower for w in ["why", "flagged", "reason"]):
+                first_row = matched_rows.iloc[0]
+                s_id = first_row.get("settlement_id", "N/A")
+                dec = first_row.get("decision", "N/A")
+                rsn = first_row.get("reason", "N/A")
+                answer = f"Settlement ID `{s_id}` was marked as `{dec}`. Reason: {rsn}"
+            else:
+                answer = f"Found {records_used} record(s) in audit log. Sample Settlement IDs: {id_str}. Reason: {reason_str}"
 
     return {
         "answer": answer.strip(),

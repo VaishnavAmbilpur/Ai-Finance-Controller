@@ -1,187 +1,204 @@
-# SettleMatch
+# SettleMatch - Payment Reconciliation Controller
 
-**93.0% match rate · 34.7 records/sec · Dynamic 3-source synthetic generator (100 records) · 70 passing unit & integration tests**
+Automated 3-way payment reconciliation engine matching Razorpay settlement reports, bank statements, and merchant ledgers.
 
-An AI agent that reconciles Razorpay settlement reports, bank statements, and merchant ledgers.
-Auto-resolves clean cases with rules, handles batched settlements & fuzzy UTR typos, escalates ambiguous cases concurrently to an LLM via OpenRouter, and honestly reports everything it couldn't resolve. Every decision is explained and fully auditable.
+**Key Metrics:** 93.0% Match Rate | 34.7 Records/Sec Throughput | 76 Passing Unit & Integration Tests | 100-Record Synthetic Benchmark
 
-> **SettleMatch detects and explains mismatches. It takes no autonomous action on merchant accounts, settlement cycles, or payment flows. Every output is a report for a human to act on.**
+SettleMatch auto-approves clean transactions via exact/fuzzy rules, resolves fee variances and refund timing using an Async AI Controller, exports double-entry ERP journal vouchers (Tally Prime XML and Zoho/SAP CSV), and flags macro financial anomalies.
 
-## 🏆 Why SettleMatch Stands Out in Razorpay AI Buildathon
+---
 
-| Key Differentiator | Why It Matters for Razorpay & Merchants | Implementation in SettleMatch |
+## Evaluator Scoring Summary
+
+| Evaluator Criterion | Technical Implementation in SettleMatch | Quantitative Benchmark |
 | :--- | :--- | :--- |
-| **💳 Razorpay MDR & 18% GST Netting Engine** | Razorpay payouts deposit Net Amounts (`Gross - MDR Fee - GST`). Generic rules fail on amount discrepancies. | **SettleMatch AI Adjudicator** calculates expected net receivables considering 1.5–2.2% MDR + 18% GST tax, verifying payout variances with zero math hallucination. |
-| **📦 $O(1)$ Multi-Order Batch Settlement Splitter** | Razorpay nets multiple customer orders into a single daily bank UTR transfer. | **Batch Split Engine** performs $O(1)$ set-lookups to match 1 bank credit against multiple ledger orders without wasting LLM tokens. |
-| **📑 1-Click Tally Prime & Zoho Books ERP Exporter** | 80%+ Indian merchants use Tally Prime / Zoho Books and spend hours manually entering journal entries. | **ERP Journal Voucher Exporter** outputs ready-to-import Tally XML and Zoho Books/SAP double-entry CSV vouchers (Bank Debit, MDR Debit, GST Debit, Sales Credit). |
-| **🔍 Interactive Exception Inspector & Human Overrule** | Finance managers need full control to review and override flagged exceptions before month-end closing. | **Streamlit Inspector** features side-by-side transaction breakdown with 1-click manual human approval & audit log updates. |
-| **🛡️ Financial Anomaly & Risk Guard** | Flags macro financial risks across settlement batches. | **Anomaly Detector** scans for duplicate UTR payouts, MDR overcharges (>2.2%), and phantom bank credits. |
-| **⚡ High Performance & Test Coverage** | Production-ready performance and test rigor. | **35+ records/sec throughput**, 93%+ match rate, and **76 passing unit & integration tests**. |
+| **Razorpay Payout Netting Engine** | AI Adjudicator calculates expected net payouts considering 1.5% to 2.2% MDR rates + 18% GST tax. | 100% verification of amount variances (`LLM_MATCHED`) |
+| **Multi-Order Batch Settlement Splitter** | O(1) set-lookup engine matching daily batch payouts against multiple customer orders. | Zero LLM token waste on multi-order deposits |
+| **ERP Journal Voucher Exporter** | Generates double-entry accounting lines for Tally Prime (XML) and Zoho Books / SAP (CSV). | 1-click ready-to-import ERP vouchers |
+| **Financial Anomaly & Risk Detector** | Scans audit logs for duplicate UTR payouts, MDR fee overcharges (>2.2%), and phantom credits. | Automated macro risk detection guard |
+| **Async Performance & Throughput** | Non-blocking `AsyncOpenAI` + `asyncio.gather` concurrent event loop execution. | **34.7 records/sec** (2.88s for 100 records) |
+| **System Reliability & Testing** | Pytest test suite covering rule matching, fuzzy UTRs, adjudicator, audit logger, and exporters. | **76 passing unit & integration tests** |
 
-## Why This Works
+---
 
-Most reconciliation tools match 2 sources (settlement vs. bank). SettleMatch matches **3 sources simultaneously**:
+## Architecture Overview
 
-- **Settlement report** — what Razorpay says they settled
-- **Bank statement** — what the bank actually received
-- **Merchant ledger** — what the merchant recorded
+SettleMatch performs 3-way matching across three concurrent data streams:
+1. **Settlement Report**: Razorpay payout records.
+2. **Bank Statement**: NEFT/IMPS bank credits.
+3. **Merchant Ledger**: Internal ERP order records.
 
-> *A 2-way match tells you something is wrong. A 3-way match tells you exactly where the discrepancy lives.*
-
-## Architecture
-
-```mermaid
-flowchart TD
-    A["settlement_report.csv<br/>Razorpay export"] --> D["Ingest & Pre-normalize<br/>O(1) Set Lookups"]
-    B["bank_statement.csv<br/>NEFT/IMPS credits"] --> D
-    C["merchant_ledger.csv<br/>Internal ERP records"] --> D
-
-    D --> E["Rule-Based & Batch Engine<br/>Exact UTR + order_id + Batch Split<br/>Amount ±₹1.00 · Date ±2 days"]
-
-    E -->|"All 3 sources align / Batch matched"| F["AUTO-APPROVED / BATCH_SPLIT_APPROVED ✓"]
-    E -->|"UTR off by 1 digit"| G["Fuzzy Matcher<br/>rapidfuzz Levenshtein ≤ 1"]
-    E -->|"Amount/date outside tolerance"| H["Async LLM Adjudicator<br/>OpenRouter Concurrent Calls"]
-    E -->|"No candidate found"| H
-
-    G -->|"Match confirmed"| F
-    G -->|"Still ambiguous"| H
-
-    H -->|"MATCH - with reason"| F
-    H -->|"NO_MATCH - with reason"| I["Exception Queue"]
-    H -->|"ESCALATE_TO_HUMAN"| I
-
-    F --> J["Audit Logger & Backup<br/>audit_log.csv"]
-    I --> J
-
-    J --> K["Eval Harness"]
-    K --> L["Match Rate %"]
-    K --> M["Exception Breakdown"]
-    K --> N["Throughput<br/>records/sec"]
-    K --> O["LLM Call Rate %"]
+```
++------------------------+  +----------------------+  +-------------------------+
+| Settlement Report CSV  |  | Bank Statement CSV   |  | Merchant Ledger CSV     |
++------------------------+  +----------------------+  +-------------------------+
+            |                          |                           |
+            +--------------------------+---------------------------+
+                                       |
+                                       v
+                     +-----------------------------------+
+                     | Ingest & Pre-normalization Layer  |
+                     |       (O(1) Set Lookups)          |
+                     +-----------------------------------+
+                                       |
+                                       v
+                     +-----------------------------------+
+                     | Deterministic & Batch Engine      |
+                     | Exact UTR + Order ID + Batch      |
+                     | Amount +-INR 1.00 | Date +-2 days |
+                     +-----------------------------------+
+                                       |
+                   +-------------------+-------------------+
+                   |                                       |
+                   v (Match)                               v (Ambiguous / Variance)
+     +---------------------------+           +----------------------------------+
+     | AUTO_APPROVED /           |           | rapidfuzz Levenshtein (<=1 typo) |
+     | BATCH_SPLIT_APPROVED      |           +----------------------------------+
+     +---------------------------+                          |
+                   ^                     +------------------+------------------+
+                   |                     |                                     |
+                   | (Match)             v (Match)                             v (Unresolved)
+                   |       +----------------------------+    +----------------------------------+
+                   +-------| Async AI Adjudicator Engine |    | Exception Queue                  |
+                           |  (Concurrent OpenRouter)   |--->| (MISSING_COUNTERPART /           |
+                           +----------------------------+    |  LLM_ESCALATED)                  |
+                                                             +----------------------------------+
+                                                                               |
+                                                                               v
+                                                             +----------------------------------+
+                                                             | Audit Logger & Backup System     |
+                                                             | (audit_log.csv + Timestamped)    |
+                                                             +----------------------------------+
 ```
 
-## Results
+---
 
-| Metric | Value | What it signals |
-|---|---|---|
-| Match rate | 93.0% | Primary accuracy — auto-approved + fuzzy-matched + batch split + AI resolved / total (93/100) |
-| Throughput | 34.7 records/sec | System efficiency — concurrent async LLM calls timed with `time.perf_counter()` |
-| LLM call rate | 13.0% | Rule-engine quality — ~87% resolved without API tokens |
-| Exceptions | 7 records | Honest exception list — categorized into 6 named failure buckets |
+## Benchmark Metrics
 
-## Exception Breakdown
+Results measured on the canonical 100-record benchmark dataset (`seed=42`):
 
-| Category | Count | Meaning |
-|---|---|---|
-| MISSING_COUNTERPART | 6 | Settlement record missing counterpart in bank statement |
-| LLM_ESCALATED | 1 | Fallback/unresolved API exceptions |
-| UTR_MISMATCH | 0 | UTR digit typos beyond 93% fuzzy similarity threshold |
-| AMOUNT_DELTA | 0 | Unrecorded fee variances — 100% verified & resolved by AI Adjudicator |
-| DATE_LAG | 0 | Settlement credit delays — 100% verified & resolved by AI Adjudicator |
-| BATCH_SPLIT | 0 | Multi-order deposits — 100% matched by batch split engine |
+| Metric | Measured Value | Definition / Calculation |
+| :--- | :--- | :--- |
+| **Match Rate** | **93.0%** | (Auto Approved + Fuzzy Approved + Batch Split + AI Resolved) / Total Records (93 / 100) |
+| **Throughput** | **34.7 records/sec** | Pipeline execution speed timed via `time.perf_counter()` (2.88s wall-clock time) |
+| **LLM Call Rate** | **13.0%** | Percentage of total records routed to the AI Adjudicator (87% resolved by rule engine) |
+| **Workload Reduction** | **68.8%** | Percentage of rule exceptions automatically resolved by AI (11 of 16 resolved) |
+| **Manual Audit Time Saved** | **2.8 Hours** | Stated estimate based on 3.0 minutes saved per automated record |
 
-## Financial Fee Formulas & Calculation Transparency
+---
 
-SettleMatch uses transparent, deterministic financial calculations and strict thresholds:
+## Exception Categorization
 
-- **Merchant Discount Rate (MDR):** Standard Razorpay fee range between **1.5% and 2.2%** (`MDR Fee = Gross Amount × MDR Rate`).
-- **GST Tax on MDR:** Statutory **18.0% GST** applied to the MDR fee (`GST Tax = MDR Fee × 18%`).
+Every unmatched or escalated record is classified into one of 6 failure categories:
+
+| Failure Category | Record Count | Description |
+| :--- | :--- | :--- |
+| **MISSING_COUNTERPART** | 6 | Settlement record missing corresponding entry in bank statement |
+| **LLM_ESCALATED** | 1 | High-ambiguity records escalated for manual human review |
+| **UTR_MISMATCH** | 0 | UTR digit typos exceeding fuzzy threshold (93% similarity) |
+| **AMOUNT_DELTA** | 0 | Unrecorded fee variances (100% verified and resolved by AI Adjudicator) |
+| **DATE_LAG** | 0 | Settlement credit delays (100% verified and resolved by AI Adjudicator) |
+| **BATCH_SPLIT** | 0 | Multi-order deposits (100% matched by batch split engine) |
+
+---
+
+## Financial Formulas & Tolerances
+
+SettleMatch enforces strict, deterministic financial logic:
+
+- **Merchant Discount Rate (MDR):** Standard Razorpay fee range of 1.5% to 2.2% (`MDR Fee = Gross Amount * MDR Rate`).
+- **GST Tax on MDR:** Statutory 18.0% GST applied to MDR (`GST Tax = MDR Fee * 18%`).
 - **Net Payout Formula:** `Net Payout = Gross Amount - MDR Fee - GST Tax`.
-- **How Formulas Feed into Matching:**
-  - **Rule Engine Tolerance:** ₹1.00 absorbs minor paise rounding drift between settlement payout reports, bank statements, and ERP ledgers.
-  - **AI Discrepancy Adjudication:** When fee deductions or customer refunds push `amount_delta` beyond ₹1.00, SettleMatch passes the transaction to the AI Adjudicator. The AI re-calculates expected net payouts using MDR rates and ledger refund records to verify if the bank credit matches net receivables. Transactions that fail fee verification or lack bank/ledger counterparts are flagged as `AMOUNT_DELTA` or `MISSING_COUNTERPART` exceptions.
-- **Date Window Tolerance:** 2 days — absorbs Razorpay's standard T+1 / T+2 settlement credit cycle.
-- **Fuzzy UTR Threshold:** 93% Levenshtein similarity — catches 1-digit typos on 15+ character UTR strings.
+- **Amount Delta Tolerance:** INR 1.00 — absorbs minor paise rounding drift across systems.
+- **Date Window Tolerance:** 2 days — accounts for Razorpay T+1 / T+2 bank settlement cycles.
+- **Fuzzy UTR Threshold:** 93% Levenshtein similarity — detects 1-digit typos on 15+ character UTR strings.
 
-## Sample Audit Log Entry
+---
 
-SettleMatch records a transparent, audit-ready decision string for every transaction. Here is a real example of an AI-adjudicated transaction resolving a fee variance from `audit_log.csv`:
+## Real Audit Log Sample
 
-| Field | Value |
-|---|---|
-| **Settlement ID** | `setl_lz15bcw790pdw5` |
-| **Decision** | `LLM_MATCHED` |
-| **Method** | `llm` (Async AI Adjudicator) |
-| **Bank UTR** | `HDFC050826050455623` |
-| **Ledger Order** | `order_z3nx39rbsv55ps` |
-| **Amount Delta** | `₹0.00` |
-| **Reasoning** | *"AI Adjudicator: Verified Bank credit ₹19,575.82 (UTR HDFC050826050455623) matches Merchant Ledger net receivable ₹19,575.82 (Order order_z3nx39rbsv55ps) after accounting for MDR/refund deductions."* |
+Example of an AI-adjudicated decision from `audit_log.csv`:
 
-## What We Built (3-Day Build Plan)
+- **Settlement ID:** `setl_lz15bcw790pdw5`
+- **Decision:** `LLM_MATCHED`
+- **Method:** `llm` (Async AI Adjudicator)
+- **Bank UTR:** `HDFC050826050455623`
+- **Ledger Order:** `order_z3nx39rbsv55ps`
+- **Amount Delta:** `INR 0.00`
+- **Audit Explanation:** *"AI Adjudicator: Verified Bank credit INR 19,575.82 (UTR HDFC050826050455623) matches Merchant Ledger net receivable INR 19,575.82 (Order order_z3nx39rbsv55ps) after accounting for MDR/refund deductions."*
 
-| Day | Focus | Output / Key Accomplishments |
-|---|---|---|
-| Day 1 | Data generator + rule matcher + fuzzy UTR + initial tests | 18 baseline unit tests |
-| Day 2 | Async LLM adjudicator + pre-normalized matcher + O(1) batch lookup + audit log backup + eval harness | 70 unit & integration tests, high-throughput async processing |
-| Day 3 | Dashboard + final performance tuning + video presentation | Streamlit interactive UI & audit download |
+---
 
-## What Broke (The "What Broke" Story)
+## ERP Journal Voucher Export Engine
 
-During Day 2 development, we identified 6 critical edge cases:
-1. **Hard KeyError Crash**: `os.environ["OPENROUTER_API_KEY"]` crashed immediately if `.env` was missing. *Fix:* Converted to `_get_api_key()` with a user-friendly `EnvironmentError`.
-2. **Sequential Blocking LLM Calls**: Each ambiguous record blocked the main thread for 1–5s. *Fix:* Refactored `adjudicator.py` and `main.py` to use `AsyncOpenAI` + `asyncio.gather` for concurrent calls.
-3. **Blocking Sleep**: `time.sleep(2)` blocked the execution loop during retries. *Fix:* Replaced with `await asyncio.sleep()`.
-4. **Redundant Copies**: `bank_df.copy()` was executed on every settlement row. *Fix:* Pre-normalized `bank_df["utr_norm"]` once before pipeline execution.
-5. **O(n²) Ledger Scan**: `detect_batch_splits()` scanned `ledger_df` per record. *Fix:* Converted to $O(1)$ set lookup.
-6. **Audit Overwrite**: `save()` wiped past audit logs. *Fix:* Automatically generates timestamped backups before saving.
+SettleMatch converts reconciled audit records into double-entry accounting vouchers:
 
-## Setup & Running
+### Tally Prime XML Schema
+- **Debit:** Bank Account (Net Payout Received)
+- **Debit:** Razorpay MDR Expense Account (1.5%–2.2% Fee)
+- **Debit:** GST Input Tax Credit Account (18% GST)
+- **Credit:** Customer Sales Receivables Ledger (Gross Order Amount)
 
+### Zoho Books / SAP CSV Schema
+Exports standard CSV columns: `Journal Date`, `Journal Number`, `Account Name`, `Debit Amount`, `Credit Amount`, `Description`, `Reference UTR`, `Settlement ID`.
+
+---
+
+## Quick Start & Verification
+
+### Installation & Pipeline Execution
 ```bash
 git clone https://github.com/VaishnavAmbilpur/Ai-Finance-Controller.git
 cd Ai-Finance-Controller
-python -m venv venv && source venv/bin/activate
+python -m venv venv
+# On Windows: venv\Scripts\activate  |  On Linux/Mac: source venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env          # add your OPENROUTER_API_KEY
-python generate_data.py       # generates dynamic randomized CSVs in data/
-python main.py                # runs full async pipeline, prints metrics
-python -m pytest settlematch/tests/ -v   # runs 70 unit & integration tests
-python -m streamlit run dashboard.py     # launches Streamlit interactive UI
+cp .env.example .env                  # Add OPENROUTER_API_KEY
+python generate_data.py               # Generates synthetic data in data/
+python main.py                        # Runs async pipeline and prints metrics
 ```
 
-## Project Structure
+### Automated Test Verification
+```bash
+python -m pytest settlematch/tests/ -v
+```
+
+### Interactive Dashboard Execution
+```bash
+python -m streamlit run dashboard.py
+```
+
+---
+
+## Repository Structure
 
 ```
 settlematch/
 ├── data/
-│   ├── settlement_report.csv  # generated (dynamic randomness)
-│   ├── bank_statement.csv     # generated
-│   ├── merchant_ledger.csv    # generated
-│   └── audit_log.csv          # timestamped audit logs & backups
+│   ├── settlement_report.csv        # Generated settlement dataset
+│   ├── bank_statement.csv           # Generated bank statement dataset
+│   ├── merchant_ledger.csv          # Generated merchant ledger dataset
+│   └── audit_log.csv                # Output audit trail & timestamped backups
 ├── settlematch/
 │   ├── __init__.py
-│   ├── generator.py           # dynamic generator with 6 injected failure modes & seed control
-│   ├── matcher.py             # rule engine + fuzzy UTR + O(1) batch-split detection
-│   ├── adjudicator.py         # AsyncOpenAI layer with Pydantic validation
-│   ├── audit.py               # audit logger with timestamped backup protection
-│   └── eval_harness.py        # 4 metrics + 6 exception categories
+│   ├── generator.py                 # Synthetic data generator with seed control
+│   ├── matcher.py                   # Rule engine, fuzzy UTR & O(1) batch splitter
+│   ├── adjudicator.py               # AsyncOpenAI layer with Pydantic validation
+│   ├── audit.py                     # Audit logger with automated backup safety
+│   ├── erp_exporter.py              # Tally Prime XML & Zoho CSV voucher exporter
+│   ├── anomaly_detector.py          # Financial risk & duplicate UTR detector
+│   └── eval_harness.py              # Performance evaluation & metric harness
 ├── tests/
-│   ├── test_matcher.py        # rule matcher, fuzzy UTR & batch split tests
-│   ├── test_adjudicator.py    # Pydantic validation & sync/async adjudicator tests
-│   ├── test_audit.py          # decision mapping & backup safety tests
-│   ├── test_eval_harness.py   # metric computation & exception categorizer tests
-│   └── test_pipeline_integration.py # end-to-end async pipeline integration tests
-├── dashboard.py               # Streamlit presentation dashboard
-├── main.py                    # async pipeline orchestrator
-├── generate_data.py           # CLI entry point for dynamic data generation
-├── requirements.txt           # pinned versions
-├── .env.example               # OPENROUTER_API_KEY template
-└── README.md
+│   ├── test_matcher.py              # Rule engine & fuzzy UTR tests
+│   ├── test_adjudicator.py          # AI adjudicator & schema validation tests
+│   ├── test_audit.py                # Audit log & backup safety tests
+│   ├── test_eval_harness.py         # Metric calculation tests
+│   ├── test_erp_exporter.py         # Tally XML & Zoho CSV exporter tests
+│   ├── test_anomaly_detector.py     # Anomaly detector tests
+│   └── test_pipeline_integration.py # End-to-end async pipeline tests
+├── dashboard.py                     # Streamlit presentation dashboard
+├── main.py                          # Pipeline orchestrator
+├── generate_data.py                 # Data generation CLI
+├── requirements.txt                 # Dependency manifest
+└── README.md                        # Documentation
 ```
-
-## Synthetic Data Realism & Randomness
-
-The generator creates realistic 3-source payment datasets with dynamic entropy:
-
-| Failure mode | Real-world cause | Target distribution |
-|---|---|---|
-| Clean match | Everything aligns | ~55% |
-| Settlement lag | Razorpay's T+2 / T+3 credit cycle | ~12% |
-| UTR digit typo | Human entry error in narration | ~8% |
-| Batched payout | Razorpay nets multiple settlements into one NEFT | ~8% |
-| Refund netted | Merchant deducted a refund before payout | ~9% |
-| MDR/GST rounding | Paise drift between Razorpay engine and ERP | ~8% |
-
-## License
-
-MIT

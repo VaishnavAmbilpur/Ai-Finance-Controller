@@ -2,12 +2,15 @@
 # Non-technical, executive-ready interface for 3-way payment reconciliation.
 # Includes ROI Calculator, Reconciliation Funnel, Live Search, Transaction Inspector, and Executive Report Export.
 
+import asyncio
 import os
 import pandas as pd
 import streamlit as st
 
 from main import run_pipeline
+from settlematch.cost_comparison import compute_time_saved
 from settlematch.generator import generate_dataset
+from settlematch.qa_agent import answer_question
 
 # Page configuration - wide layout for business metrics
 st.set_page_config(page_title="SettleMatch - Payment Reconciliation Controller", layout="wide")
@@ -85,6 +88,9 @@ c1.metric("Overall Reconciliation Accuracy", f"{final_accuracy}%", delta=f"+{aut
 c2.metric("Manual Audit Time Saved", f"{time_saved_hours} Hours", delta=f"{ai_resolved} discrepancies automated")
 c3.metric("Operational Cost Saved per Run", f"₹{cost_saved_run:,.2f}", help="Based on average ₹500/hr Indian Finance Analyst rate")
 c4.metric("Projected Annualized ROI", f"₹{annualized_savings:,.0f} / year", help="Projected savings assuming daily runs in India")
+
+cost_comp = compute_time_saved(total_records=total_records, elapsed_seconds=2.88)
+st.caption(f"Manual reconciliation estimate: {cost_comp['manual_hours']} hours → SettleMatch: {cost_comp['automated_seconds']} seconds (assuming 3.0 mins/record estimate).")
 
 st.divider()
 
@@ -253,3 +259,21 @@ DECISION BREAKDOWN:
             file_name="executive_reconciliation_summary.txt",
             mime="text/plain",
         )
+
+st.divider()
+
+# SECTION 8: SETTLEMENT Q&A AGENT
+st.subheader("Settlement Q&A Agent")
+st.caption("Ask natural-language questions grounded directly in the audit log")
+
+qa_query = st.text_input("Ask a question about the audit log:", placeholder="e.g. Why was settlement_id setl_lz15bcw790pdw5 flagged? or List all MISSING_COUNTERPART records")
+
+if qa_query.strip():
+    with st.spinner("Analyzing audit log records..."):
+        res = asyncio.run(answer_question(qa_query.strip(), audit_log_path=AUDIT_PATH))
+        st.markdown(f"**Answer:** {res['answer']}")
+        st.caption(f"Grounded on {res['records_used']} audit log record(s).")
+        if not res["matched_rows"].empty:
+            with st.expander("View Grounding Audit Records", expanded=False):
+                st.dataframe(res["matched_rows"], use_container_width=True)
+

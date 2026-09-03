@@ -17,6 +17,16 @@ Most reconciliation tools match 2 sources (settlement vs. bank). SettleMatch mat
 
 > *A 2-way match tells you something is wrong. A 3-way match tells you exactly where the discrepancy lives.*
 
+## Settlement Q&A Agent
+
+SettleMatch includes a natural-language query layer built on top of the audit log (`settlematch/qa_agent.py`). It enables finance managers to ask conversational questions about reconciliation decisions without writing manual spreadsheet filters. Answers are strictly grounded in pandas-filtered audit records to ensure complete transparency and traceability back to the audit log.
+
+Example questions supported:
+- *"Why was settlement_id setl_lz15bcw790pdw5 flagged?"*
+- *"How many exceptions were AMOUNT_DELTA this run?"*
+- *"List all MISSING_COUNTERPART records."*
+- *"What's the most common exception reason?"*
+
 ## Architecture
 
 ```mermaid
@@ -57,6 +67,7 @@ flowchart TD
 | Throughput | 34.7 records/sec | System efficiency — concurrent async LLM calls timed with `time.perf_counter()` |
 | LLM call rate | 13.0% | Rule-engine quality — ~87% resolved without API tokens |
 | Exceptions | 7 records | Honest exception list — categorized into 6 named failure buckets |
+| Human cost saved | 5.0 hours | Time efficiency — estimated manual audit time (5.0 hours @ 3.0 mins/record) vs automated runtime (2.88 seconds) |
 
 ## Exception Breakdown
 
@@ -143,13 +154,17 @@ settlematch/
 │   ├── matcher.py             # rule engine + fuzzy UTR + O(1) batch-split detection
 │   ├── adjudicator.py         # AsyncOpenAI layer with Pydantic validation
 │   ├── audit.py               # audit logger with timestamped backup protection
-│   └── eval_harness.py        # 4 metrics + 6 exception categories
+│   ├── eval_harness.py        # 4 metrics + 6 exception categories
+│   ├── qa_agent.py            # natural language Q&A agent over audit log
+│   └── cost_comparison.py     # human manual audit cost & time saved calculator
 ├── tests/
 │   ├── test_matcher.py        # rule matcher, fuzzy UTR & batch split tests
 │   ├── test_adjudicator.py    # Pydantic validation & sync/async adjudicator tests
 │   ├── test_audit.py          # decision mapping & backup safety tests
 │   ├── test_eval_harness.py   # metric computation & exception categorizer tests
-│   └── test_pipeline_integration.py # end-to-end async pipeline integration tests
+│   ├── test_pipeline_integration.py # end-to-end async pipeline integration tests
+│   ├── test_qa_agent.py       # Q&A agent pandas filtering & LLM grounding tests
+│   └── test_cost_comparison.py # human manual time saved metric unit tests
 ├── dashboard.py               # Streamlit presentation dashboard
 ├── main.py                    # async pipeline orchestrator
 ├── generate_data.py           # CLI entry point for dynamic data generation

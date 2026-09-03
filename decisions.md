@@ -68,3 +68,24 @@ This document records all key technical decisions, bug fixes, benchmark choices,
 * **Decision:** Explicitly documented MDR fee ranges (1.5%–2.2%) and GST tax (18%) in [`README.md`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/README.md) and connected them to `AMOUNT_DELTA` tolerance and AI Adjudication.
 * **Rationale:**
   * Explains how fee deductions and refunds are verified by the AI engine to convert raw amount variances into `LLM_MATCHED` decisions.
+
+---
+
+## 8. Settlement Q&A Agent (`settlematch/qa_agent.py`)
+
+* **Decision:** Implemented a pandas pre-filtered natural-language Q&A query layer in [`settlematch/qa_agent.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/settlematch/qa_agent.py) and integrated it into [`dashboard.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/dashboard.py).
+* **Rationale:**
+  * Track 4 lists "Multi-source reconciliation" and "Settlement Q&A agent" as key directions. Combining both provides strong Track 4 differentiation.
+  * Reuses existing `AsyncOpenAI` client configuration from [`settlematch/adjudicator.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/settlematch/adjudicator.py) without duplicate infrastructure.
+  * Queries filter and aggregate audit records in pandas first before calling the LLM prompt. Answers are strictly grounded in audit log records (`audit_log.csv`), maintaining full auditability and preventing hallucinated answers.
+
+---
+
+## 9. Human-Cost Comparison Metric (`settlematch/cost_comparison.py`)
+
+* **Decision:** Created a pure utility function `compute_time_saved()` in [`settlematch/cost_comparison.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/settlematch/cost_comparison.py) to calculate estimated manual processing hours saved versus automated runtime.
+* **Rationale:**
+  * Translates raw performance metrics (93% match rate, 34.7 rec/sec) into human-understandable time savings (e.g. 5.0 hours saved for 100 records).
+  * Kept in an independent pure module to prevent expanding the scope of `settlematch/eval_harness.py`.
+  * Manual audit time per record (default 3.0 minutes) is explicitly labeled as a stated estimate across all UI displays and documentation.
+

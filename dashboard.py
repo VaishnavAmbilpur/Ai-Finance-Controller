@@ -215,7 +215,7 @@ with st.expander("Filter, Search, and Export Complete Audit Log", expanded=True)
 
     st.dataframe(filtered_df, use_container_width=True, height=350)
 
-    btn_col1, btn_col2 = st.columns(2)
+    btn_col1, btn_col2, btn_col3, btn_col4 = st.columns(4)
     with btn_col1:
         st.download_button(
             label="Download Complete Audit Log (CSV)",
@@ -253,3 +253,39 @@ DECISION BREAKDOWN:
             file_name="executive_reconciliation_summary.txt",
             mime="text/plain",
         )
+    with btn_col3:
+        from settlematch.erp_exporter import generate_tally_xml
+        tally_xml = generate_tally_xml(df)
+        st.download_button(
+            label="Export Tally Prime Vouchers (XML)",
+            data=tally_xml,
+            file_name="settlematch_tally_vouchers.xml",
+            mime="application/xml",
+        )
+    with btn_col4:
+        from settlematch.erp_exporter import generate_zoho_csv
+        zoho_csv = generate_zoho_csv(df)
+        st.download_button(
+            label="Export Zoho/SAP Journals (CSV)",
+            data=zoho_csv,
+            file_name="settlematch_zoho_journals.csv",
+            mime="text/csv",
+        )
+
+# SECTION 8: FINANCIAL ANOMALY & RISK DETECTOR GUARD
+st.divider()
+st.subheader("Financial Anomaly & Risk Detector Guard")
+from settlematch.anomaly_detector import detect_anomalies
+anomalies_res = detect_anomalies(df)
+
+if anomalies_res["total_anomalies"] == 0:
+    st.success("No macro financial risks or duplicate payouts detected across audit log.")
+else:
+    st.warning(f"Detected {anomalies_res['total_anomalies']} macro risk alert(s) requiring finance team audit:")
+    for dup in anomalies_res["duplicate_utrs"]:
+        st.error(f"- **[DUPLICATE UTR PAYOUT]**: {dup['message']}")
+    for mdr in anomalies_res["mdr_overcharges"]:
+        st.warning(f"- **[MDR OVERCHARGE ALERT]**: {mdr['message']}")
+    for ph in anomalies_res["phantom_credits"]:
+        st.info(f"- **[PHANTOM BANK CREDIT]**: {ph['message']}")
+

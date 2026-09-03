@@ -68,3 +68,22 @@ This document records all key technical decisions, bug fixes, benchmark choices,
 * **Decision:** Explicitly documented MDR fee ranges (1.5%–2.2%) and GST tax (18%) in [`README.md`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/README.md) and connected them to `AMOUNT_DELTA` tolerance and AI Adjudication.
 * **Rationale:**
   * Explains how fee deductions and refunds are verified by the AI engine to convert raw amount variances into `LLM_MATCHED` decisions.
+
+---
+
+## 8. ERP Journal Voucher Exporter (`settlematch/erp_exporter.py`)
+
+* **Decision:** Implemented [`settlematch/erp_exporter.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/settlematch/erp_exporter.py) to export reconciled audit records directly as **Tally Prime XML** and **Zoho Books / SAP CSV** double-entry journal vouchers.
+* **Rationale:**
+  * Solves the post-reconciliation bottleneck for Indian merchants using Tally Prime or Zoho Books.
+  * Exports proper double-entry vouchers: Debit Bank, Debit Razorpay MDR Fee, Debit GST Input Tax Credit (18%), and Credit Customer Sales Receivables.
+
+---
+
+## 9. Financial Anomaly & Risk Guard (`settlematch/anomaly_detector.py`)
+
+* **Decision:** Created [`settlematch/anomaly_detector.py`](file:///c:/Users/Vaishnav%20Ambilpur/Desktop/Razor-pay-AiHack/settlematch/anomaly_detector.py) to scan audit logs for macro financial risks.
+* **Rationale:**
+  * Detects duplicate UTR payouts across bank batches, MDR overcharges exceeding contract rates (>2.2%), and phantom bank credits missing ledger counterparts.
+  * Surfaces high-priority warning banners directly in the Streamlit dashboard.
+

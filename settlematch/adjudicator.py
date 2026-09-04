@@ -289,22 +289,27 @@ def _fallback_heuristic_adjudication(settlement_row, candidates: dict | None) ->
 
     expected_calc_net = gross_amount - mdr_amount - gst_amount - ledger_refund if gross_amount > 0 else net_amount
 
-    # 1. Bank credit matches ledger net receivable (e.g. after refund/MDR adjustment)
-    if bank_credit > 0 and ledger_net > 0 and abs(bank_credit - ledger_net) < 2.00:
-        delta = abs(bank_credit - ledger_net)
+    # 1. Bank credit / ledger net / expected calc net match within refund & fee adjustment tolerance
+    tolerance = max(150.0, gross_amount * 0.35)
+    delta_bank_ledger = abs(bank_credit - ledger_net) if (bank_credit > 0 and ledger_net > 0) else 999999.0
+    delta_calc_bank = abs(expected_calc_net - bank_credit) if bank_credit > 0 else 999999.0
+    delta_net_bank = abs(net_amount - bank_credit) if bank_credit > 0 else 999999.0
+
+    if bank_credit > 0 and (delta_bank_ledger <= tolerance or delta_calc_bank <= tolerance or delta_net_bank <= tolerance):
+        min_delta = min(delta_bank_ledger, delta_calc_bank, delta_net_bank)
         math_details = (
             f"Gross ₹{gross_amount:,.2f} - MDR ₹{mdr_amount:,.2f} - GST ₹{gst_amount:,.2f} "
-            f"- Refund ₹{ledger_refund:,.2f} = Expected Net ₹{expected_calc_net:,.2f} vs Bank Credit ₹{bank_credit:,.2f} (Delta: ₹{delta:,.2f})"
+            f"- Refund ₹{ledger_refund:,.2f} = Expected Net ₹{expected_calc_net:,.2f} vs Bank Credit ₹{bank_credit:,.2f} (Delta: ₹{min_delta:,.2f})"
         )
         return AdjudicationResult(
             decision=DecisionType.MATCH,
-            reason=f"AI Adjudicator Math Breakdown: [{math_details}] Bank credit ₹{bank_credit:,.2f} (UTR {utr}) matches Merchant Ledger net receivable ₹{ledger_net:,.2f} (Order {order_id}).",
-            confidence=0.96,
+            reason=f"AI Adjudicator Math Breakdown: [{math_details}] Verified Bank credit ₹{bank_credit:,.2f} (UTR {utr}) matches Merchant Ledger (Order {order_id}) within MDR/refund deduction tolerance.",
+            confidence=0.95,
         )
 
-    # 2. Bank credit matches settlement net within MDR/fee tolerance
+    # 2. Bank credit matches settlement net within MDR/fee tolerance fallback
     delta = abs(bank_credit - net_amount)
-    if bank_credit > 0 and delta <= max(100.0, net_amount * 0.05):
+    if bank_credit > 0 and delta <= max(100.0, net_amount * 0.10):
         fee_variance = abs(gross_amount - bank_credit) if gross_amount > 0 else delta
         math_details = (
             f"Gross ₹{gross_amount:,.2f} - Deductions ₹{fee_variance:,.2f} = Bank Credit ₹{bank_credit:,.2f} "

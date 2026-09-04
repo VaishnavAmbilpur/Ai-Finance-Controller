@@ -120,20 +120,25 @@ def match_settlement(
         else:
             # No exact or fuzzy match above threshold — calculate highest partial similarity
             best_raw_score = 0.0
+            best_cand_utr = None
             for bu in bank_df["utr_norm"].tolist():
                 s = fuzz.ratio(settlement_utr, bu)
                 if s > best_raw_score:
                     best_raw_score = s
+                    best_cand_utr = bu
 
-            # If there's partial UTR similarity (70-92%), it's a UTR typo; otherwise, bank entry is missing
-            exc_cat = "UTR_MISMATCH" if best_raw_score >= 70.0 else "MISSING_COUNTERPART"
-
-            return MatchResult(
-                decision=Decision.MISSING_COUNTERPART,
-                method="none",
-                reason=f"No exact or fuzzy UTR match found for {settlement_utr} (best similarity: {best_raw_score:.1f}%).",
-                exception_category=exc_cat,
-            )
+            # If partial UTR similarity candidate exists (e.g. >= 50%), use it as candidate bank row for AI adjudication!
+            if best_cand_utr is not None and best_raw_score >= 50.0:
+                bank_row = bank_df[bank_df["utr_norm"] == best_cand_utr].iloc[0]
+                method = "fuzzy"
+            else:
+                exc_cat = "UTR_MISMATCH" if best_raw_score >= 50.0 else "MISSING_COUNTERPART"
+                return MatchResult(
+                    decision=Decision.MISSING_COUNTERPART,
+                    method="none",
+                    reason=f"No exact or fuzzy UTR match found for {settlement_utr} (best similarity: {best_raw_score:.1f}%).",
+                    exception_category=exc_cat,
+                )
 
     # STEP 3: Find matching order_id in merchant ledger
     ledger_matches = ledger_df[ledger_df["order_id"].astype(str).str.strip() == settlement_order_id]

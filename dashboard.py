@@ -278,6 +278,12 @@ st.subheader("Financial Anomaly & Risk Detector Guard")
 from settlematch.anomaly_detector import detect_anomalies
 anomalies_res = detect_anomalies(df)
 
+g1, g2, g3, g4 = st.columns(4)
+g1.metric("Total Macro Risk Alerts", anomalies_res["total_anomalies"])
+g2.metric("Duplicate UTR Payouts", len(anomalies_res["duplicate_utrs"]))
+g3.metric("MDR Overcharge Alerts", len(anomalies_res["mdr_overcharges"]))
+g4.metric("Phantom Bank Credits", len(anomalies_res["phantom_credits"]))
+
 if anomalies_res["total_anomalies"] == 0:
     st.success("No macro financial risks or duplicate payouts detected across audit log.")
 else:
@@ -288,4 +294,5 @@ else:
         st.warning(f"- **[MDR OVERCHARGE ALERT]**: {mdr['message']}")
     for ph in anomalies_res["phantom_credits"]:
         st.info(f"- **[PHANTOM BANK CREDIT]**: {ph['message']}")
+
 

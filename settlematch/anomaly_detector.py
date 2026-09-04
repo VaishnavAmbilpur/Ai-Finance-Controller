@@ -20,7 +20,7 @@ def detect_anomalies(df: pd.DataFrame) -> dict:
         - "mdr_overcharges": list of MDR overcharge risk dicts
         - "phantom_credits": list of phantom bank credit risk dicts
     """
-    if df.empty:
+    if df is None or not isinstance(df, pd.DataFrame) or df.empty:
         return {
             "total_anomalies": 0,
             "duplicate_utrs": [],
@@ -31,17 +31,21 @@ def detect_anomalies(df: pd.DataFrame) -> dict:
     duplicate_utrs = []
     if "bank_utr" in df.columns:
         def is_valid_utr_code(utr_val):
+            if pd.isna(utr_val):
+                return False
             s = str(utr_val).strip().upper()
-            if not s or s in ["N/A", "NAN", "NONE", "—", "-"]:
+            if not s or s in ["N/A", "NAN", "NONE", "—", "-", "UNKNOWN"]:
                 return False
             try:
-                float(s)
-                return False  # Skip numerical batch sums
+                val = float(s)
+                # Skip monetary float amounts containing decimals (e.g. 1155.63)
+                if "." in s:
+                    return False
             except ValueError:
                 pass
             return len(s) >= 6
 
-        utr_series = df["bank_utr"].apply(lambda x: str(x).strip() if is_valid_utr_code(x) else None).dropna()
+        utr_series = df["bank_utr"].apply(lambda x: str(x).strip().upper() if is_valid_utr_code(x) else None).dropna()
         dup_counts = utr_series.value_counts()
         dups = dup_counts[dup_counts > 1]
         for utr_val, cnt in dups.items():
@@ -57,23 +61,27 @@ def detect_anomalies(df: pd.DataFrame) -> dict:
     if "reason" in df.columns:
         for idx, row in df.iterrows():
             reason_str = str(row.get("reason", "")).lower()
-            if "overcharge" in reason_str or "exceeds" in reason_str or "unauthorized fee" in reason_str:
+            if any(k in reason_str for k in ["overcharge", "exceeds", "unauthorized fee", "excess fee", "overcharged", "high fee"]):
+                sid = row.get("settlement_id")
+                sid_str = f"SETL_{idx}" if (pd.isna(sid) or str(sid).strip().lower() in ["nan", "none", ""]) else str(sid)
                 mdr_overcharges.append({
                     "type": "MDR_FEE_OVERCHARGE",
-                    "settlement_id": str(row.get("settlement_id", f"SETL_{idx}")),
+                    "settlement_id": sid_str,
                     "severity": "MEDIUM",
-                    "message": f"Settlement `{row.get('settlement_id')}` flagged for MDR fee overcharge rate."
+                    "message": f"Settlement `{sid_str}` flagged for MDR fee overcharge rate."
                 })
 
     phantom_credits = []
     if "decision" in df.columns:
         phantom_rows = df[df["decision"] == "MISSING_COUNTERPART"]
         for idx, row in phantom_rows.iterrows():
+            sid = row.get("settlement_id")
+            sid_str = f"SETL_{idx}" if (pd.isna(sid) or str(sid).strip().lower() in ["nan", "none", ""]) else str(sid)
             phantom_credits.append({
                 "type": "PHANTOM_BANK_CREDIT",
-                "settlement_id": str(row.get("settlement_id", f"SETL_{idx}")),
+                "settlement_id": sid_str,
                 "severity": "HIGH",
-                "message": f"Settlement `{row.get('settlement_id')}` missing ledger order reference."
+                "message": f"Settlement `{sid_str}` missing ledger order reference."
             })
 
     total_count = len(duplicate_utrs) + len(mdr_overcharges) + len(phantom_credits)
